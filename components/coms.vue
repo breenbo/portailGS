@@ -1,19 +1,80 @@
 <template>
   <div id="container">
       <h1>Communications</h1>
-      {{dataBase}}
+      <article v-for="com in comm" :key="com.id" class="centerCard">
+        <div class="cardHeader" :style="borderClass(com)">
+          {{com.Titre}}
+          <v-icon v-for="domain in com.domains" :key="domain.id" :name="devChoices.domainsDict[domain].logo" scale="2.5" class="logo"/>
+          <div class="comDate">{{com.literalDate}}</div>
+        </div>
+        <div v-html="com.Texte" class="cardBody"></div>
+      </article>
   </div>
 </template>
 
 <script>
 export default {
-    props:['dataBase']
+    props:['comm', 'devChoices'],
+    methods: {
+      borderClass : (obj) => {
+          const border = `border-left:solid 6px ${obj.borderColor}`
+          return border
+      }
+    }
 }
 </script>
 
-<style>
+<style scoped>
   #container {
       grid-area: center;
       background-color: cyan;
+      padding:0 1vw;
+  }
+  .centerCard {
+    text-align: left;
+    /* padding:0vw 0vw 1.5vw 0vw; */
+    margin:15px 0;
+    background-color: hsl(351,95%,99%);
+    border-radius:5px;
+    border:solid 1px lightgray;
+    /* box-shadow : 0 4px 4px rgba(0, 0, 0, 0.2), 0 4px 4px rgba(0, 0, 0, 0.19); */
+  }
+  .centerCard:hover {
+    box-shadow : 0 2px 2px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.19);
+    transition-property:box-shadow;
+    transition-duration:0.2s;
+  }
+  .cardHeader {
+    font-size: 1.3vw;
+    font-weight: bold;
+    color:hsl(220,10%,20%);
+    background-color:hsl(220,0%,99%);
+    border:solid 1px lightgray;
+    padding:0.8vw 0.5vw 0.5vw 0.5vw;
+    cursor:pointer;
+  }
+  .cardBody {
+    /* display:none; */
+    text-align:justify;
+    font-size:1.1vw;
+    padding:1vw 1.5vw;
+  }
+  .cardBody::first-letter {
+    font-size:150%;
+  }
+  .comDate {
+    font-size:1vw;
+    margin-left:25px;
+    color:hsl(0,0%,50%);
+    font-weight:normal;
+  }
+  .cardBody a:hover{
+    color:purple;
+  }
+  .logo {
+    font-size:2vw;
+    float:right;
+    margin:0 5px;
+    color:hsl(0,0%,80%);
   }
 </style>

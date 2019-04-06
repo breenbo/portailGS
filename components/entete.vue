@@ -8,7 +8,7 @@
 
 <script>
 export default {
-    data : () => {
+    data () {
         return {
             name: {
                 dicom :'DICOM - GSBdD des Antilles',
@@ -17,8 +17,7 @@ export default {
                 dicom : require('@/assets/logoSCATransparent.png')
             }
         }
-    },
-    props: ['products']
+    }
 }
 </script>
 

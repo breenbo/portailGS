@@ -2,7 +2,7 @@
   <div id="app">
     <entete></entete>
     <events v-if="echeances.length !== 0" :echeances="echeances" :devChoices="devChoices"></events>
-    <!-- <coms v-if="coms.length !== 0" :comm="comm"></coms> -->
+    <coms v-if="comm.length !== 0" :comm="comm" :devChoices="devChoices"></coms>
   </div>
 </template>
 
@@ -10,13 +10,13 @@
 
 import entete from './components/entete.vue'
 import events from './components/events.vue'
-// import coms from './components/coms.vue'
+import coms from './components/coms.vue'
 import XLSX from 'xlsx'
+import { setInterval } from 'timers';
 
 export default {
   data () {
     return {
-      dataBase : [],
       echeances : [],
       comm : [],
       annuaire : [],
@@ -46,7 +46,8 @@ export default {
               sst: { logo:'street-view', borderColor:'hsl(200,100%,30%'},
               ugm: { logo:'edit', borderColor:'hsl(200,100%,30%'},
               b2m: { logo:'ship', borderColor:'hsl(167,70%,90%)'}
-          }
+          },
+          balises: ['image', 'lien', 'lien1', 'lien2', 'lien3', 'mail1','mail2' ]
       },
     }
   },
@@ -55,19 +56,28 @@ export default {
     // HelloWorld,
     entete,
     events,
-    // coms
+    coms
   },
   created: function () {
     // function to fetch every X minutes (let user choose ?)
-    this.fetch()
+    // setInterval(() => console.log('test'), 1000)
+    // setInterval(() => this.getDatas(), 5000)
+    this.getDatas()
+    // setInterval(() => this.getDatas(), 1000)
+  },
+  mounted : function() {
   },
   methods: {
-    fetch () {
+    getDatas () {
       fetch("comsEcheances.xlsx")
       .then(response => response.arrayBuffer())
       .then(response => this.convertToJSON(response))
       // .then(response => this.events = this.convertToJSON(response))
-      .then(response => this.echeances = this.createObject(response[0], false, true))
+      .then((response) => {
+        this.echeances = this.createObject(response[0], false, true)
+        this.comm = this.createObject(response[1], true, false)
+        // console.log(this.comm[0])
+        })
     },
     convertToJSON (data) {
         // convert data to binary file
@@ -119,16 +129,17 @@ export default {
             if (array[i][j]) {
                 obj[keyNames[j]] = array[i][j]
             }
+            // create domain array
+            this.createDomainArray(obj)
             if (coms) {
               // replace the easy markup 
-              // replaceMarkup(obj)
+              this.replaceMarkup(obj)
               // create literal date - only for coms
-              // this.literalDate(obj)
+              this.literalDate(obj)
             }
             // create domainString for classes
             // this.createDomainString(obj)
             if (evt) {
-              this.createDomainArray(obj)
               // sort futurs events
               this.sortEcheance(obj)
               // create html for events
@@ -139,18 +150,18 @@ export default {
               // obj.color = this.devChoices.domainsDict['cdt'].color
               obj.borderColor = this.devChoices.domainsDict[obj.domains[0]].borderColor
             } else {
-              obj.borderColor = 'gray'
+              obj.borderColor = 'lightgray'
             }
           }
           // store each object in array
           if (domain) {
-          // push only the corresponding object because it's for a specific page
-          for (const key of Object.keys(obj)) {
-              key === domain ? objArray.push(obj) : null
-          }
+            // push only the corresponding object because it's for a specific page
+            for (const key of Object.keys(obj)) {
+                key === domain ? objArray.push(obj) : null
+            }
           } else {
-          // push all object in array because it's for the main page
-          objArray.push(obj)
+            // push all object in array because it's for the main page
+            objArray.push(obj)
           }
           // sort array by date, echeance or nom
           // objArray.sort((a, b) => b.Date - a.Date)
@@ -218,6 +229,39 @@ export default {
             }
         }
     },
+    replaceMarkup (obj) {
+      // replace easy markup in obj.texte with real
+      // input : object
+      // output : object
+      for (const el of this.devChoices.balises) {
+        const search = `<${el}>`
+        let completeMarkup = ''
+        if (el === 'image') {
+          completeMarkup = `<img src="${obj.image}" style="width:100%">`
+        } else if (/lien/.test(el)) {
+          completeMarkup = `<a href="${obj[el]}" target="_blank">`
+        } else if (/mail/.test(el)) {
+          completeMarkup = `<a href="mailto:${obj[el]}">`
+        }
+        // remove parasiting " due to excel
+        //object.Texte = object.Texte.split('"').join('')
+        // replace the elements
+        if (obj.Texte && obj[el]) {
+          obj.Texte = obj.Texte.split(search).join(completeMarkup)
+          // close the markups
+          obj.Texte = obj.Texte.split(`</${el}>`).join('</a>')
+        }
+      }
+    },
+    literalDate (object) {
+      // transform date Object to an string date
+      // input : com object with date object
+      // output : com object with literal date
+      if (object.Date) {
+      let literalDate = `${object.Date.getDate()} ${this.devChoices.months[object.Date.getMonth()]} ${object.Date.getFullYear()}`
+      object.literalDate = literalDate
+      }
+    }
   }
 }
 </script>
@@ -236,7 +280,7 @@ export default {
     "navbar navbar navbar"
     "left center right"
     "footer footer footer";
-    grid-template-columns: 17vw 62vw 20vw;
+    grid-template-columns: 17vw 67vw 15vw;
     grid-template-rows: 18vw 3vw 1fr 10vw;
 }
 </style>

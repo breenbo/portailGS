@@ -19,7 +19,7 @@
 
 <script>
 export default {
-    data : () => {
+    data () {
         return {
             temporalMarkup : {
                 past : "En cours...",
