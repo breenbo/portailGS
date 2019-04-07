@@ -33,14 +33,12 @@ export default {
             }
         }
     },
-    props:['echeances', 'logoDict', 'devChoices'],
+    props:['annuaireArray', 'echeances', 'logoDict', 'devChoices'],
     methods : {
         borderClass : (obj) => {
             const border = `border-left:solid 6px ${obj.borderColor}`
             return border
         }
-    },
-    computed: {
     }
 }
 </script>

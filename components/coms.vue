@@ -2,12 +2,12 @@
   <div id="container">
       <h1>Communications</h1>
       <article v-for="com in comm" :key="com.id" class="centerCard">
-        <div class="cardHeader" :style="borderClass(com)">
+        <div class="cardHeader" :style="borderClass(com)" @click="toggleBody(com)">
           {{com.Titre}}
           <v-icon v-for="domain in com.domains" :key="domain.id" :name="devChoices.domainsDict[domain].logo" scale="2.5" class="logo"/>
           <div class="comDate">{{com.literalDate}}</div>
         </div>
-        <div v-html="com.Texte" class="cardBody"></div>
+        <div v-html="com.Texte" class="cardBody" v-if="com.bodyView"></div>
       </article>
   </div>
 </template>
@@ -19,6 +19,10 @@ export default {
       borderClass : (obj) => {
           const border = `border-left:solid 6px ${obj.borderColor}`
           return border
+      },
+      toggleBody(com) {
+        // change com.bodyView to toggle body
+        com.bodyView = !com.bodyView
       }
     }
 }
@@ -27,7 +31,6 @@ export default {
 <style scoped>
   #container {
       grid-area: center;
-      background-color: cyan;
       padding:0 1vw;
   }
   .centerCard {
@@ -36,7 +39,7 @@ export default {
     margin:15px 0;
     background-color: hsl(351,95%,99%);
     border-radius:5px;
-    border:solid 1px lightgray;
+    border:solid 1px hsl(0,0%,85%);
     /* box-shadow : 0 4px 4px rgba(0, 0, 0, 0.2), 0 4px 4px rgba(0, 0, 0, 0.19); */
   }
   .centerCard:hover {
@@ -49,7 +52,7 @@ export default {
     font-weight: bold;
     color:hsl(220,10%,20%);
     background-color:hsl(220,0%,99%);
-    border:solid 1px lightgray;
+    border-bottom:solid 1px hsl(0,0%,90%);
     padding:0.8vw 0.5vw 0.5vw 0.5vw;
     cursor:pointer;
   }

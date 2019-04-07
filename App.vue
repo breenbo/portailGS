@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <entete></entete>
+    <plan :annuaire="annuaire"></plan>
     <events v-if="echeances.length !== 0" :echeances="echeances" :devChoices="devChoices"></events>
     <coms v-if="comm.length !== 0" :comm="comm" :devChoices="devChoices"></coms>
   </div>
@@ -9,10 +10,11 @@
 <script>
 
 import entete from './components/entete.vue'
+import plan from './components/plan.vue'
 import events from './components/events.vue'
 import coms from './components/coms.vue'
 import XLSX from 'xlsx'
-import { setInterval } from 'timers';
+// import { setInterval } from 'timers';
 
 export default {
   data () {
@@ -55,6 +57,7 @@ export default {
   components: {
     // HelloWorld,
     entete,
+    plan,
     events,
     coms
   },
@@ -65,8 +68,6 @@ export default {
     this.getDatas()
     // setInterval(() => this.getDatas(), 1000)
   },
-  mounted : function() {
-  },
   methods: {
     getDatas () {
       fetch("comsEcheances.xlsx")
@@ -76,7 +77,8 @@ export default {
       .then((response) => {
         this.echeances = this.createObject(response[0], false, true)
         this.comm = this.createObject(response[1], true, false)
-        // console.log(this.comm[0])
+        this.annuaire = this.createObject(response[2])
+        // console.log(this.annuaireArray)
         })
     },
     convertToJSON (data) {
@@ -124,6 +126,9 @@ export default {
           const objLen = array[i].length
           // create object for each line in the array
           let obj = {}
+          obj.borderColor = ''
+          obj.bodyView = false
+          obj.annuaireView = true
           // fill the object with all the element in a particular array, except empty and STOP
           for (let j = 0; j != objLen; j++) {
             if (array[i][j]) {
@@ -145,7 +150,6 @@ export default {
               // create html for events
               this.createEventsHTML(obj)
             }
-            obj.borderColor = ''
             if (obj.domains.length !== 0) {
               // obj.color = this.devChoices.domainsDict['cdt'].color
               obj.borderColor = this.devChoices.domainsDict[obj.domains[0]].borderColor
@@ -164,7 +168,7 @@ export default {
             objArray.push(obj)
           }
           // sort array by date, echeance or nom
-          // objArray.sort((a, b) => b.Date - a.Date)
+          objArray.sort((a, b) => b.Date - a.Date)
           objArray.sort((a, b) => a.Echeance - b.Echeance)
           // use > for string, and - for numbers
           // objArray.sort((a, b) => a.nom > b.nom)
