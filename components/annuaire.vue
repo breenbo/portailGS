@@ -4,7 +4,7 @@
             <h2 @click="init">Annuaire GSBdD</h2>
         </div>
         <div id="body" v-show="annuaireView">
-            <h1 id='titre'>Annuaire GSBdD</h1>
+            <h1 id='titre'>Annuaire GSBdD<v-icon id="closeButton" name="times-circle" scale="3"/></h1>
             <input type="text" id="input" v-model="searchInput" placeholder="recherche par grade, prénom, nom, service, fonction">
             <div id="result">
                 <div class="row" v-for="result in filteredAnnuaire" :key="result.id">
@@ -59,11 +59,15 @@ export default {
     h2 {
         text-align:left;
         padding-left:2vw;
+        cursor: pointer;
+    }
+    h2:hover {
+        border-left:solid 6px black;
     }
     #body {
         position:absolute;
-        top:15vh;
-        left:20vw;
+        top:8vh;
+        left:-65vw;
         text-align:left;
         padding:0 1vw;
         border:solid 1px hsl(0,0%,85%);
@@ -80,6 +84,16 @@ export default {
         margin:1vw;
         max-height:60vh;
         overflow-y: scroll;
+    }
+    #closeButton {
+        position:relative;
+        top:-1.8vw;
+        right:-1.7vw;
+        float:right;
+        color:lightblue;
+    }
+    #closeButton:hover {
+        color:red;
     }
     .row {
         display:grid;

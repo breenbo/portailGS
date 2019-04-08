@@ -22,6 +22,9 @@ import 'vue-awesome/icons/edit'
 import 'vue-awesome/icons/ship'
 import 'vue-awesome/icons/exclamation-circle'
 import 'vue-awesome/icons/hands-helping'
+import 'vue-awesome/icons/times-circle'
+import 'vue-awesome/icons/car'
+import 'vue-awesome/icons/bed'
 
 import App from './App.vue'
 

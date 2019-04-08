@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <entete></entete>
+    <navbar :services="devChoices.services"></navbar>
     <plan :annuaire="annuaire"></plan>
     <events v-if="echeances.length !== 0" :echeances="echeances" :devChoices="devChoices"></events>
     <coms v-if="comm.length !== 0" :comm="comm" :devChoices="devChoices"></coms>
@@ -13,6 +14,7 @@ import entete from './components/entete.vue'
 import plan from './components/plan.vue'
 import events from './components/events.vue'
 import coms from './components/coms.vue'
+import navbar from './components/navbar.vue'
 import XLSX from 'xlsx'
 // import { setInterval } from 'timers';
 
@@ -26,6 +28,16 @@ export default {
       devChoices: {
           months : ['janvier', 'février','mars', 'avril', 'mai', 'juin', 'juillet','août','septembre','octobre','novembre','décembre'],
           domaines : ['ceremonie','cdt','cpu','cmi','cohez','cyclone','da','epms','infra','logfin','mco','pil','prodef','pam','pc','service_courant','secu','secre','sst','ugm','b2m'],
+          services : [
+            {name:'Accueil', logo:''},
+            {name: 'DICOM', logo:'male'},
+            {name: 'PIL', logo:'tasks'},
+            {name: 'SAF', logo:'shopping-cart'},
+            {name: 'SAP', logo:'address-card'},
+            {name: 'SSC', logo:'car'},
+            {name: 'SSV', logo:'bed'},
+            {name: 'HSCT', logo:'street-view'}
+          ],
           domainsDict : {
               ceremonie: { logo : 'male', borderColor : 'hsl(240,100%,5%)' },
               cdt: { logo: 'anchor', borderColor : 'hsl(240,100%,10%)'},
@@ -57,6 +69,7 @@ export default {
   components: {
     // HelloWorld,
     entete,
+    navbar,
     plan,
     events,
     coms
