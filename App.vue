@@ -36,7 +36,11 @@ export default {
             {name: 'SAP', logo:'address-card'},
             {name: 'SSC', logo:'car'},
             {name: 'SSV', logo:'bed'},
-            {name: 'HSCT', logo:'street-view'}
+            {name: 'HSCT', logo:'street-view'},
+            {name:'Liens', logo:'link', 
+              subMenu:[{nom:'FAA', link:'faa.com'}, {nom:'GSBdD', link:'gsbdd.com'}, {nom:'SCA',link:'sca.com'}], 
+              show:false
+            }
           ],
           domainsDict : {
               ceremonie: { logo : 'male', borderColor : 'hsl(240,100%,5%)' },
@@ -75,11 +79,14 @@ export default {
     coms
   },
   created: function () {
-    // function to fetch every X minutes (let user choose ?)
-    // setInterval(() => console.log('test'), 1000)
-    // setInterval(() => this.getDatas(), 5000)
+    // try to use localStorage
+    // const localEcheances = localStorage.getItem('echeances')
+    // if (localEcheances != null) {
+    //   this.echeances = JSON.parse(localEcheances)
+    // }
     this.getDatas()
-    // setInterval(() => this.getDatas(), 1000)
+    // function to fetch every X minutes
+    // setInterval(() => this.getDatas(), 5000)
   },
   methods: {
     getDatas () {
@@ -91,7 +98,9 @@ export default {
         this.echeances = this.createObject(response[0], false, true)
         this.comm = this.createObject(response[1], true, false)
         this.annuaire = this.createObject(response[2])
-        // console.log(this.annuaireArray)
+        // localStorage.setItem('echeances',JSON.stringify(this.echeances))
+        // localStorage.setItem('comm',JSON.stringify(this.comm))
+        // localStorage.setItem('annuaire',JSON.stringify(this.annuaire))
         })
     },
     convertToJSON (data) {

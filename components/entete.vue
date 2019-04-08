@@ -24,6 +24,7 @@ export default {
 <style scoped>
     h1 {
         font-size : 5vw;
+        color:yellow;
     }
     #header {
         grid-area: header;

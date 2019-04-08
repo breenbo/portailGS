@@ -25,14 +25,13 @@ import 'vue-awesome/icons/hands-helping'
 import 'vue-awesome/icons/times-circle'
 import 'vue-awesome/icons/car'
 import 'vue-awesome/icons/bed'
-
-import App from './App.vue'
-
-Vue.config.productionTip = false
-
+import 'vue-awesome/icons/link'
 // register and call logo globally
 import Icon from 'vue-awesome/components/Icon'
 Vue.component('v-icon', Icon)
+
+import App from './App.vue'
+Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),

@@ -33,7 +33,7 @@ export default {
             }
         }
     },
-    props:['annuaireArray', 'echeances', 'logoDict', 'devChoices'],
+    props:['echeances', 'logoDict', 'devChoices'],
     methods : {
         borderClass : (obj) => {
             const border = `border-left:solid 6px ${obj.borderColor}`
