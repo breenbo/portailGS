@@ -26,7 +26,7 @@ export default {
     #container {
         grid-area: right;
         background-color: cyan;
-        height:90vh;
+        height:95vh;
         position:sticky;
         top:3vw;
         z-index:0;

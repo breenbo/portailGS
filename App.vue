@@ -1,19 +1,15 @@
 <template>
   <div id="app">
-    <entete></entete>
-    <navbar :services="devChoices.services"></navbar>
+    <router-view name="header"></router-view>
+    <navbar :services="devChoices.services" :liens="devChoices.liens"></navbar>
     <plan :annuaire="annuaire"></plan>
-    <events v-if="echeances.length !== 0" :echeances="echeances" :devChoices="devChoices"></events>
-    <coms v-if="comm.length !== 0" :comm="comm" :devChoices="devChoices"></coms>
+    <router-view name="main" :echeances="echeances" :comm="comm" :devChoices="devChoices"></router-view>
   </div>
 </template>
 
 <script>
 
-import entete from './components/entete.vue'
 import plan from './components/plan.vue'
-import events from './components/events.vue'
-import coms from './components/coms.vue'
 import navbar from './components/navbar.vue'
 import XLSX from 'xlsx'
 // import { setInterval } from 'timers';
@@ -29,19 +25,18 @@ export default {
           months : ['janvier', 'février','mars', 'avril', 'mai', 'juin', 'juillet','août','septembre','octobre','novembre','décembre'],
           domaines : ['ceremonie','cdt','cpu','cmi','cohez','cyclone','da','epms','infra','logfin','mco','pil','prodef','pam','pc','service_courant','secu','secre','sst','ugm','b2m'],
           services : [
-            {name:'Accueil', logo:''},
-            {name: 'DICOM', logo:'male'},
-            {name: 'PIL', logo:'tasks'},
-            {name: 'SAF', logo:'shopping-cart'},
-            {name: 'SAP', logo:'address-card'},
-            {name: 'SSC', logo:'car'},
-            {name: 'SSV', logo:'bed'},
-            {name: 'HSCT', logo:'street-view'},
-            {name:'Liens', logo:'link', 
-              subMenu:[{nom:'FAA', link:'faa.com'}, {nom:'GSBdD', link:'gsbdd.com'}, {nom:'SCA',link:'sca.com'}], 
-              show:false
-            }
+            {name:'Accueil', logo:'', active:true},
+            {name: 'DICOM', logo:'male', active:false},
+            {name: 'PIL', logo:'tasks', active:false},
+            {name: 'SAF', logo:'shopping-cart', active:false},
+            {name: 'SAP', logo:'address-card', active:false},
+            {name: 'SSC', logo:'car', active:false},
+            {name: 'SSV', logo:'bed', active:false},
+            {name: 'HSCT', logo:'street-view', active:false},
           ],
+          liens: {name:'Liens', logo:'link',
+            subMenu:[{nom:'FAA', link:'faa.com'}, {nom:'GSBdD', link:'gsbdd.com'}, {nom:'SCA',link:'sca.com'}], 
+          },
           domainsDict : {
               ceremonie: { logo : 'male', borderColor : 'hsl(240,100%,5%)' },
               cdt: { logo: 'anchor', borderColor : 'hsl(240,100%,10%)'},
@@ -71,12 +66,8 @@ export default {
   },
   name: 'app',
   components: {
-    // HelloWorld,
-    entete,
     navbar,
     plan,
-    events,
-    coms
   },
   created: function () {
     // try to use localStorage
@@ -93,7 +84,6 @@ export default {
       fetch("comsEcheances.xlsx")
       .then(response => response.arrayBuffer())
       .then(response => this.convertToJSON(response))
-      // .then(response => this.events = this.convertToJSON(response))
       .then((response) => {
         this.echeances = this.createObject(response[0], false, true)
         this.comm = this.createObject(response[1], true, false)

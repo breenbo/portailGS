@@ -1,5 +1,6 @@
 <template>
   <div id="container">
+    <router-view></router-view>
       <h1>Communications</h1>
       <article v-for="com in comm" :key="com.id" class="centerCard">
         <div class="cardHeader" :style="borderClass(com)" @click="toggleBody(com)">
