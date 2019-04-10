@@ -18,7 +18,7 @@ export default new Router({
     { path: '/:id',
       // name: 'Home',
       components :  {
-        // main : Home,
+        main : Main,
         header : Header
       }
     },

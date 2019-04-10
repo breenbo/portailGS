@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view name="header"></router-view>
+    <router-view name="header" :services="devChoices.domainsDict"></router-view>
     <navbar :services="devChoices.services" :liens="devChoices.liens"></navbar>
     <plan :annuaire="annuaire"></plan>
     <router-view name="main" :echeances="echeances" :comm="comm" :devChoices="devChoices"></router-view>
@@ -23,7 +23,7 @@ export default {
       meteo : [],
       devChoices: {
           months : ['janvier', 'février','mars', 'avril', 'mai', 'juin', 'juillet','août','septembre','octobre','novembre','décembre'],
-          domaines : ['ceremonie','cdt','cpu','cmi','cohez','cyclone','da','epms','infra','logfin','mco','pil','prodef','pam','pc','service_courant','secu','secre','sst','ugm','b2m'],
+          domaines : ['ceremonie','DICOM','PIL','SAF','SAP','SSC','SSV','epms','infra','logfin','mco','pil','prodef','HSCT','pc','service_courant','secu','secre','sst','ugm','b2m'],
           services : [
             {name:'Accueil', logo:'', active:true},
             {name: 'DICOM', logo:'male', active:false},
@@ -38,27 +38,28 @@ export default {
             subMenu:[{nom:'FAA', link:'faa.com'}, {nom:'GSBdD', link:'gsbdd.com'}, {nom:'SCA',link:'sca.com'}], 
           },
           domainsDict : {
-              ceremonie: { logo : 'male', borderColor : 'hsl(240,100%,5%)' },
-              cdt: { logo: 'anchor', borderColor : 'hsl(240,100%,10%)'},
-              cohez: { logo: 'chart-pie', borderColor: 'hsl(200,100%,30%'},
-              cpu: { logo:'hands-helping', borderColor:'hsl(200,100%,30%'},
-              cmi: { logo:'bug', borderColor:'hsl(160,100%,30%)'},
-              cyclone: { logo:'cloud', borderColor:'hsl(21,100%,60%)'},
-              da: { logo:'address-card', borderColor:'hsl(0,75%,35%)'},
-              epms: { logo:'heartbeat', borderColor:'hsl(270,100%,30%)'},
-              infra: { logo:'building', borderColor:'hsl(0,0%,50%)'},
-              logfin: { logo:'shopping-cart', borderColor:'hsl(52,100%,51%)'},
-              mco: { logo:'cogs', borderColor:'hsl(200,29%,60%)'},
-              prodef: { logo:'shield-alt', borderColor:'hsl(101,33%,36%)'},
-              pam: { logo:'briefcase', borderColor:'hsl(30,75%,30%)'},
-              pc: { logo:'users', borderColor:'hsl(288,59%,58%)'},
-              pil: { logo:'exclamation-circle', borderColor:'hsl(240,100%,10%)'},
-              'service_courant': { logo:'tasks', borderColor:'hsl(62,61%,44%)'},
-              secu: { logo:'fire-extinguisher', borderColor:'hsl(0,100%,50%)'},
-              secre: { logo:'envelope', borderColor:'hsl(160,100%,30%)'},
-              sst: { logo:'street-view', borderColor:'hsl(200,100%,30%'},
-              ugm: { logo:'edit', borderColor:'hsl(200,100%,30%'},
-              b2m: { logo:'ship', borderColor:'hsl(167,70%,90%)'}
+              ceremonie: { logo : 'male', color : 'hsl(240,100%,5%)' },
+              DICOM: {nom: 'Directeur', logo:'male', color:'brown'},
+              PIL:{nom:'Pilotage', logo:'tasks', color:'purple'},
+              SAF:{nom:'Service Achats Finances', logo:'shopping-cart', color:'green'},
+              SAP: {nom:'Service Administration du Personnel', logo:'address-card', color:'grey'},
+              SSC:{nom:'Service Soutiens Communs', logo:'car', color:'orange'},
+              SSV:{nom:'Service Soutien Vie', logo:'bed', color:'pink'},
+              HSCT:{nom:'HSCT - Incendie', logo:'street-view', color:'red'},
+              epms: { logo:'heartbeat', color:'hsl(270,100%,30%)'},
+              infra: { logo:'building', color:'hsl(0,0%,50%)'},
+              logfin: { logo:'shopping-cart', color:'hsl(52,100%,51%)'},
+              mco: { logo:'cogs', color:'hsl(200,29%,60%)'},
+              prodef: { logo:'shield-alt', color:'hsl(101,33%,36%)'},
+              pc: { logo:'users', color:'hsl(288,59%,58%)'},
+              pil: { logo:'exclamation-circle', color:'hsl(240,100%,10%)'},
+              'service_courant': { logo:'tasks', color:'hsl(62,61%,44%)'},
+              secu: { logo:'fire-extinguisher', color:'hsl(0,100%,50%)'},
+              secre: { logo:'envelope', color:'hsl(160,100%,30%)'},
+              sst: { logo:'street-view', color:'hsl(200,100%,30%'},
+              ugm: { logo:'edit', color:'hsl(200,100%,30%'},
+              b2m: { logo:'ship', color:'hsl(167,70%,90%)'},
+              accueil: {logo:'male', color:'lightgray'}
           },
           balises: ['image', 'lien', 'lien1', 'lien2', 'lien3', 'mail1','mail2' ]
       },
@@ -138,7 +139,7 @@ export default {
           const objLen = array[i].length
           // create object for each line in the array
           let obj = {}
-          obj.borderColor = ''
+          obj.color = ''
           obj.bodyView = false
           obj.annuaireView = true
           // fill the object with all the element in a particular array, except empty and STOP
@@ -162,12 +163,13 @@ export default {
               // create html for events
               this.createEventsHTML(obj)
             }
-            if (obj.domains.length !== 0) {
+            // if (obj.domains.length > 1) {
               // obj.color = this.devChoices.domainsDict['cdt'].color
-              obj.borderColor = this.devChoices.domainsDict[obj.domains[0]].borderColor
-            } else {
-              obj.borderColor = 'lightgray'
-            }
+              const len = obj.domains.length-1
+              obj.color = this.devChoices.domainsDict[obj.domains[len]].color
+            // } else {
+              // obj.borderColor = 'lightgray'
+            // }
           }
           // store each object in array
           if (domain) {
@@ -236,7 +238,7 @@ export default {
     createDomainArray (object) {
         // input : object with some attributes filled with something not space
         // output : object with array domains attribute (domains : sst, pam, cdt)
-        object.domains = []
+        object.domains = ['accueil']
         for (const attr in object) {
             if (this.devChoices.domaines.indexOf(attr) !== -1) {
                 if (/\S/.test(object[attr])) {

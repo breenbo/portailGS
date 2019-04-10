@@ -2,7 +2,7 @@
     <div id="container">
         <router-link v-for="service in services" 
           :key="service.id" class="title" 
-          :to="['Accueil','Liens'].indexOf(service.name) !== -1  ? '/' : service.name" 
+          :to="['Accueil'].indexOf(service.name) !== -1  ? '/' : service.name" 
           :id="service.name">
             {{service.name}}<v-icon v-if="service.logo" :name="service.logo" scale="1.5" class="logo"/>
         </router-link>

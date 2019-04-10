@@ -2,14 +2,20 @@
   <div id="container">
     <router-view></router-view>
       <h1>Communications</h1>
-      <article v-for="com in comm" :key="com.id" class="centerCard">
+      <article v-for="com in filteredComs($route.params.id)" 
+        :key="com.id" class="centerCard">
         <div class="cardHeader" :style="borderClass(com)" @click="toggleBody(com)">
           {{com.Titre}}
-          <v-icon v-for="domain in com.domains" :key="domain.id" :name="devChoices.domainsDict[domain].logo" scale="2.5" class="logo"/>
+          <!-- icon only for domain != accueil -->
+          <v-icon v-for="domain in com.domains.filter(el => el.indexOf('accueil') === -1)" 
+            :key="domain.id" 
+            :name="devChoices.domainsDict[domain].logo" 
+            scale="2.5" class="logo"/>
           <div class="comDate">{{com.literalDate}}</div>
         </div>
         <div v-html="com.Texte" class="cardBody" v-if="com.bodyView"></div>
       </article>
+      <!-- <article v-for="com in comm.filter(el=>el.domains.indexOf($route.params.id) !== -1)"  -->
   </div>
 </template>
 
@@ -18,13 +24,18 @@ export default {
     props:['comm', 'devChoices'],
     methods: {
       borderClass : (obj) => {
-          const border = `border-left:solid 6px ${obj.borderColor}`
+          const border = `border-left:solid 6px ${obj.color}`
           return border
       },
       toggleBody(com) {
         // change com.bodyView to toggle body
         com.bodyView = !com.bodyView
+      },
+      filteredComs (id) {
+        return this.comm.filter(el => id === undefined ? true : el.domains.indexOf(id) !== -1)
       }
+    },
+    computed: {
     }
 }
 </script>

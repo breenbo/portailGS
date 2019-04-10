@@ -4,16 +4,25 @@
         <!-- <h1 @click="eventDataBase">Echeances</h1> -->
         <div v-for="(value, key) in temporalMarkup" :key="value.id">
             <div class="semaine">{{value}}</div>
-            <div v-for="event in echeances.filter(event => event.sorted === key)" class="event-card" :style="borderClass(event)" :key="event.id">
+            <div v-for="event in filteredEcheances(key, $route.params.id)" 
+                class="event-card" 
+                :style="borderClass(event)" 
+                :key="event.id">
                 <span class="jour">{{event.Echeance.getDate().toString().padStart(2,"0")}}</span>
                 <span class="mois">
                      {{devChoices.months[event.Echeance.getMonth()]}}
                 </span>
                 <span class="heure" v-if="event.heure"> - {{event.heure}}</span>
-                <v-icon v-for="domain in event.domains" :key="domain.id" :name="devChoices.domainsDict[domain].logo" scale="1.5" class="logo"/>
+                <!-- icon only for domain != accueil -->
+                <v-icon v-for="domain in event.domains.filter(el=>el.indexOf('accueil') === -1)" 
+                    :key="domain.id" 
+                    :name="devChoices.domainsDict[domain].logo" 
+                    scale="1.5" class="logo"/>
                 <span v-html="event.html" class='event'></span>
             </div>
         </div>
+
+            <!-- <div v-for="event in echeances.filter(event => event.sorted === key).filter(el=>el.domains.indexOf($route.params.id) !== -1)"  -->
     </div>
 </template>
 
@@ -33,11 +42,20 @@ export default {
             }
         }
     },
+    computed: {
+        // filteredEcheances (key, id) {
+        //     return this.echeances.filter(el => el.sorted === key).filter(el => el.domains.indexOf(id) !== -1)
+        // }
+    },
     props:['echeances', 'logoDict', 'devChoices'],
     methods : {
         borderClass : (obj) => {
-            const border = `border-left:solid 6px ${obj.borderColor}`
+            const border = `border-left:solid 6px ${obj.color}`
             return border
+        },
+        filteredEcheances (key, id) {
+            // filter echeances array if id for each pages
+            return this.echeances.filter(el => el.sorted === key).filter(el => id === undefined ? true : el.domains.indexOf(id) !== -1)
         }
     }
 }
