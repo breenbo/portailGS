@@ -3,14 +3,16 @@
     <router-view></router-view>
       <h1>Communications</h1>
       <article v-for="com in filteredComs($route.params.id)" 
-        :key="com.id" class="centerCard">
-        <div class="cardHeader" :style="borderClass(com)" @click="toggleBody(com)">
+               :key="com.id" class="centerCard">
+        <div class="cardHeader" 
+             :style="borderClass(com)" 
+             @click="toggleBody(com)">
           {{com.Titre}}
           <!-- icon only for domain != accueil -->
           <v-icon v-for="domain in com.domains.filter(el => el.indexOf('accueil') === -1)" 
-            :key="domain.id" 
-            :name="devChoices.domainsDict[domain].logo" 
-            scale="2.5" class="logo"/>
+                  :key="domain.id" 
+                  :name="devChoices.domainsDict[domain].logo" 
+                  scale="2.5" class="logo"/>
           <div class="comDate">{{com.literalDate}}</div>
         </div>
         <div v-html="com.Texte" class="cardBody" v-if="com.bodyView"></div>
@@ -20,23 +22,39 @@
 </template>
 
 <script>
+import { EventBus } from '../eventBus.js'
+
 export default {
-    props:['comm', 'devChoices'],
-    methods: {
-      borderClass : (obj) => {
-          const border = `border-left:solid 6px ${obj.color}`
-          return border
-      },
-      toggleBody(com) {
-        // change com.bodyView to toggle body
-        com.bodyView = !com.bodyView
-      },
-      filteredComs (id) {
-        return this.comm.filter(el => id === undefined ? true : el.domains.indexOf(id) !== -1)
-      }
-    },
-    computed: {
+  data () {
+    return {
+      search : /(?:)/
     }
+  },
+  props:['comm', 'devChoices'],
+  methods: {
+    // add color to border depending on object's color
+    borderClass : (obj) => {
+        const border = `border-left:solid 6px ${obj.color}`
+        return border
+    },
+    toggleBody(com) {
+      // change com.bodyView to toggle body
+      com.bodyView = !com.bodyView
+    },
+    filteredComs (id) {
+      // const regexp = new RegExp(this.search, 'i')
+      // create filtered array depending of matching regexp with filter and return true on regexp -> keep in filtered array
+      return this.comm
+         .filter(el => id === undefined ? true : el.domains.indexOf(id) !== -1)
+         .filter(el => {
+             const testString = `${el.Titre} ${el.Texte}`
+             return this.search.test(testString)
+         })
+    }
+  },
+  created () {
+    EventBus.$on('searchEdit', search => this.search = search)
+  }
 }
 </script>
 

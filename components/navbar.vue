@@ -14,15 +14,19 @@
                 <a :href=lien.link>{{lien.nom}}</a>
             </div>
         </div>
-        <input type="text" v-model="searchInput" placeholder="Recherche cartes et échéances"/>
+        <input type="text" v-model="search" @keyup="searchEdit"  placeholder="Recherche cartes et échéances"/>
     </div>
 </template>
 
 <script>
+// import store from '../store'
+import { EventBus } from '../eventBus'
+
 export default {
     data () {
         return {
-            searchInput:"",
+            search:'',
+            searchRegexp : /(?:)/,
             showLinks:false
         }
     },
@@ -30,8 +34,12 @@ export default {
     methods: {
         showSubMenu(service) {
             service.show = !service.show
+        },
+        searchEdit() {
+            this.searchRegexp = new RegExp(this.search, 'i')
+            EventBus.$emit('searchEdit', this.searchRegexp)
         }
-    }
+    },
 }
 </script>
 

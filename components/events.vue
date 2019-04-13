@@ -21,12 +21,13 @@
                 <span v-html="event.html" class='event'></span>
             </div>
         </div>
-
             <!-- <div v-for="event in echeances.filter(event => event.sorted === key).filter(el=>el.domains.indexOf($route.params.id) !== -1)"  -->
     </div>
 </template>
 
 <script>
+import { EventBus } from '../eventBus.js'
+
 export default {
     data () {
         return {
@@ -39,13 +40,9 @@ export default {
                 nextWeek : "14 jours",
                 thisMonth : "30 jours",
                 futur : "Plus tard"
-            }
+            },
+            search:/(?:)/
         }
-    },
-    computed: {
-        // filteredEcheances (key, id) {
-        //     return this.echeances.filter(el => el.sorted === key).filter(el => el.domains.indexOf(id) !== -1)
-        // }
     },
     props:['echeances', 'logoDict', 'devChoices'],
     methods : {
@@ -55,8 +52,14 @@ export default {
         },
         filteredEcheances (key, id) {
             // filter echeances array if id for each pages
-            return this.echeances.filter(el => el.sorted === key).filter(el => id === undefined ? true : el.domains.indexOf(id) !== -1)
+            return this.echeances
+                .filter(el => el.sorted === key)
+                .filter(el => id === undefined ? true : el.domains.indexOf(id) !== -1)
+                .filter(el => this.search.test(el.Texte))
         }
+    },
+    created () {
+        EventBus.$on('searchEdit', search => this.search = search)
     }
 }
 </script>

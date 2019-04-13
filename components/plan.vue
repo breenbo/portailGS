@@ -1,6 +1,7 @@
 <template>
     <div id="container">
         <h1>Plan</h1>
+        <!-- <h2>{{essai.test}}</h2> -->
         <annuaire :annuaire="annuaire"></annuaire>
         <h2>Feuille de service</h2>
         <h2>Programme</h2>
@@ -13,8 +14,13 @@
 
 <script>
 import annuaire from './annuaire.vue'
+// import store from '../store'
 
 export default {
+    data () {
+        return {
+        }
+    },
     components : {
         annuaire
     },
