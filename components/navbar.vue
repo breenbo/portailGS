@@ -6,13 +6,16 @@
           :id="service.name">
             {{service.name}}<v-icon v-if="service.logo" :name="service.logo" scale="1.5" class="logo"/>
         </router-link>
-        <div class="title" @click="showLinks=!showLinks">
+        <!-- <div class="title" @click="showLinks=!showLinks" @mouseenter="showLinks=true" @mouseleave="showLinks=false"> -->
+        <div class="title" @mouseenter="showLinks=true" @mouseleave="showLinks=false">
             {{liens.name}}<v-icon :name="liens.logo" scale="1.5" class="logo"/>
-        </div>
-        <div class="subMenu" v-if="showLinks">
-            <div v-for="lien in liens.subMenu" :key="lien.id">
-                <a :href=lien.link>{{lien.nom}}</a>
-            </div>
+            <transition name="dropdown">
+                <div class="subMenu" v-if="showLinks">
+                    <div v-for="lien in liens.subMenu" :key="lien.id">
+                        <a :href=lien.link>{{lien.nom}}</a>
+                    </div>
+                </div>
+            </transition>
         </div>
         <input type="text" v-model="search" @keyup="searchEdit"  placeholder="Recherche cartes et échéances"/>
     </div>
@@ -32,8 +35,9 @@ export default {
     },
     props:['services', 'liens'],
     methods: {
-        showSubMenu(service) {
-            service.show = !service.show
+        showSubMenu() {
+            // service.show = !service.show
+            this.showLinks = !this.showLinks
         },
         searchEdit() {
             this.searchRegexp = new RegExp(this.search, 'i')
@@ -72,7 +76,7 @@ export default {
     .subMenu {
         /* display:none; */
         position:absolute;
-        top:3vw;
+        /* top:1vw; */
         right:16vw;
         min-width:10vw;
         margin-left:1.2vw;
@@ -96,5 +100,18 @@ export default {
     .router-link-exact-active {
         background-color: red;
         border:solid 2px white;
+    }
+    .dropdown-enter-active, .dropdown-leave-active {
+        transition : all 0.25s ease-out;
+        transform-origin:top center;
+    }
+    .dropdown-enter, .dropdown-leave-to {
+        transform: translateY(20px);
+        /* transform: scaleY(0.7); */
+        opacity:0;
+    }
+    .dropdown-leave, .dropdown-enter-to {
+        opacity:1;
+        transform: scaleY(1)
     }
 </style>

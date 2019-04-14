@@ -3,15 +3,17 @@
         <div id="title">
             <h2 @click="init">Annuaire GSBdD</h2>
         </div>
-        <div id="body" v-show="annuaireView">
-            <h1 id='titre'>Annuaire GSBdD<v-icon id="closeButton" name="times-circle" scale="3"/></h1>
-            <input type="text" id="input" v-model="searchInput" placeholder="recherche par grade, prénom, nom, service, fonction">
-            <div id="result">
-                <div class="row" v-for="result in filteredAnnuaire" :key="result.id">
-                    <div v-for="field in searchFields" :key="field.id">{{result[field]}}</div>
+        <transition name="fade">
+            <div id="body" v-show="annuaireView">
+                <h1 id='titre'>Annuaire GSBdD<v-icon id="closeButton" name="times-circle" scale="3"/></h1>
+                <input type="text" id="input" v-model="searchInput" placeholder="recherche par grade, prénom, nom, service, fonction">
+                <div id="result">
+                    <div class="row" v-for="result in filteredAnnuaire" :key="result.id">
+                        <div v-for="field in searchFields" :key="field.id">{{result[field]}}</div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </transition>
     </div>
 </template>
 
@@ -68,6 +70,7 @@ export default {
         position:absolute;
         top:8vh;
         left:-65vw;
+        z-index:9;
         text-align:left;
         padding:0 1vw;
         border:solid 1px hsl(0,0%,85%);
@@ -106,5 +109,17 @@ export default {
     }
     .hide {
         display:none;
+    }
+    .fade-enter, .fade-leave-to {
+        transform: scaleY(0.7);
+        opacity:0;
+    }
+    .fade-leave,.fade-enter-to {
+        opacity:1;
+        transform: scaleY(1)
+    }
+    .fade-enter-active, .fade-leave-active {
+        transition : all 0.25s ease-out;
+        transform-origin:top center;
     }
 </style>

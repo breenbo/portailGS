@@ -1,23 +1,28 @@
 <template>
   <div id="container">
-    <router-view></router-view>
+    <!-- <router-view></router-view> -->
       <h1>Communications</h1>
-      <article v-for="com in filteredComs($route.params.id)" 
-               :key="com.id" class="centerCard">
-        <div class="cardHeader" 
-             :style="borderClass(com)" 
-             @click="toggleBody(com)">
-          {{com.Titre}}
-          <!-- icon only for domain != accueil -->
-          <v-icon v-for="domain in com.domains.filter(el => el.indexOf('accueil') === -1)" 
-                  :key="domain.id" 
-                  :name="devChoices.domainsDict[domain].logo" 
-                  scale="2.5" class="logo"/>
-          <div class="comDate">{{com.literalDate}}</div>
-        </div>
-        <div v-html="com.Texte" class="cardBody" v-if="com.bodyView"></div>
-      </article>
-      <!-- <article v-for="com in comm.filter(el=>el.domains.indexOf($route.params.id) !== -1)"  -->
+      <transition-group name="comSlide" appear>
+        <article v-for="com in filteredComs($route.params.id)" 
+                :key="com.key" 
+                class="centerCard">
+          <div class="cardHeader" 
+              :style="borderClass(com)" 
+              @click="toggleBody(com)">
+            {{com.Titre}}
+            <!-- icon only for domain != accueil -->
+            <v-icon v-for="domain in com.domains.filter(el => el.indexOf('accueil') === -1)" 
+                    :key="domain.id" 
+                    :name="devChoices.domainsDict[domain].logo" 
+                    scale="2.5" class="logo"/>
+            <div class="comDate">{{com.literalDate}}</div>
+          </div>
+          <div v-html="com.Texte" 
+              v-if="com.bodyView" 
+              class="cardBody">
+          </div>
+        </article>
+      </transition-group>
   </div>
 </template>
 
@@ -59,6 +64,7 @@ export default {
 </script>
 
 <style scoped>
+
   #container {
       grid-area: center;
       padding:0 1vw;
@@ -109,5 +115,21 @@ export default {
     float:right;
     margin:0 5px;
     color:hsl(0,0%,80%);
+  }
+  .comSlide-enter, .comSlide-leave-to {
+      opacity:0;
+      transform:translateY(-30px);
+  }
+  .comSlide-leave, .comSlide-enter-to {
+      opacity:1;
+  }
+  .comSlide-enter-active, .comSlide-leave-active {
+      transition: all 0.6s ease-out;
+  }
+  .comSlide-leave-active {
+      position:absolute;
+  }
+  .comSlide-move {
+      transition: transform 0.6s;
   }
 </style>

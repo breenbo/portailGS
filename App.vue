@@ -1,14 +1,24 @@
 <template>
   <div id="app">
-    <router-view name="header" :services="devChoices.domainsDict"></router-view>
-    <navbar :services="devChoices.services" :liens="devChoices.liens"></navbar>
+    <transition name="headerSlide" appear>
+      <router-view name="header" 
+                  :services="devChoices.domainsDict" 
+                  :key="$route.params.id">
+      </router-view>
+    </transition>
+    <navbar :services="devChoices.services" 
+            :liens="devChoices.liens">
+    </navbar>
     <plan :annuaire="annuaire"></plan>
-    <router-view name="main" :echeances="echeances" :comm="comm" :devChoices="devChoices"></router-view>
+    <router-view name="main" 
+                 :echeances="echeances" 
+                 :comm="comm" 
+                 :devChoices="devChoices">
+    </router-view>
   </div>
 </template>
 
 <script>
-
 import plan from './components/plan.vue'
 import navbar from './components/navbar.vue'
 import XLSX from 'xlsx'
@@ -154,22 +164,19 @@ export default {
               this.replaceMarkup(obj)
               // create literal date - only for coms
               this.literalDate(obj)
+              // create unique key for each object
+              obj.key = obj.Titre + obj.Date.getDate() + Math.random(0,1).toString()
             }
-            // create domainString for classes
-            // this.createDomainString(obj)
             if (evt) {
               // sort futurs events
               this.sortEcheance(obj)
               // create html for events
               this.createEventsHTML(obj)
+              // create unique key for each object
+              obj.key = obj.Texte + obj.Echeance.getDate() + Math.random(0,1).toString()
             }
-            // if (obj.domains.length > 1) {
-              // obj.color = this.devChoices.domainsDict['cdt'].color
-              const len = obj.domains.length-1
-              obj.color = this.devChoices.domainsDict[obj.domains[len]].color
-            // } else {
-              // obj.borderColor = 'lightgray'
-            // }
+            const len = obj.domains.length-1
+            obj.color = this.devChoices.domainsDict[obj.domains[len]].color
           }
           // store each object in array
           if (domain) {
@@ -285,20 +292,32 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  /* margin-top: 60px; */
-  display:grid;
-  grid-template-areas: 
-    "header header header"
-    "navbar navbar navbar"
-    "left center right"
-    "footer footer footer";
-    grid-template-columns: 17vw 67vw 15vw;
-    grid-template-rows: 18vw 3vw 1fr 10vw;
-}
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin:-10px;
+    margin-top:-30px;
+    /* margin-top: 60px; */
+    display:grid;
+    grid-template-areas: 
+      "header header header"
+      "navbar navbar navbar"
+      "left center right"
+      "footer footer footer";
+      grid-template-columns: 17vw 67vw 15.4vw;
+      grid-template-rows: 18vw 3vw 1fr 10vw;
+  }
+    .headerSlide-enter, .headerSlide-leave-to {
+        opacity:0;
+        transform:translateY(30px);
+    }
+    .headerSlide-leave, .headerSlide-enter-to {
+        opacity:1;
+    }
+    .headerSlide-enter-active, .headerSlide-leave-active {
+        transition: all 0.6s ease-out;
+    }
 </style>

@@ -1,27 +1,27 @@
 <template>
     <div id="container">
         <h1>Echeances</h1>
-        <!-- <h1 @click="eventDataBase">Echeances</h1> -->
         <div v-for="(value, key) in temporalMarkup" :key="value.id">
             <div class="semaine">{{value}}</div>
-            <div v-for="event in filteredEcheances(key, $route.params.id)" 
-                class="event-card" 
-                :style="borderClass(event)" 
-                :key="event.id">
-                <span class="jour">{{event.Echeance.getDate().toString().padStart(2,"0")}}</span>
-                <span class="mois">
-                     {{devChoices.months[event.Echeance.getMonth()]}}
-                </span>
-                <span class="heure" v-if="event.heure"> - {{event.heure}}</span>
-                <!-- icon only for domain != accueil -->
-                <v-icon v-for="domain in event.domains.filter(el=>el.indexOf('accueil') === -1)" 
-                    :key="domain.id" 
-                    :name="devChoices.domainsDict[domain].logo" 
-                    scale="1.5" class="logo"/>
-                <span v-html="event.html" class='event'></span>
-            </div>
+            <transition-group name="eventSlide" appear>
+                <div v-for="event in filteredEcheances(key, $route.params.id)" 
+                    class="event-card" 
+                    :style="borderClass(event)"
+                    :key="event.key">
+                    <span class="jour">{{event.Echeance.getDate().toString().padStart(2,"0")}}</span>
+                    <span class="mois">
+                        {{devChoices.months[event.Echeance.getMonth()]}}
+                    </span>
+                    <span class="heure" v-if="event.heure"> - {{event.heure}}</span>
+                    <!-- icon only for domain != accueil -->
+                    <v-icon v-for="domain in event.domains.filter(el=>el.indexOf('accueil') === -1)" 
+                        :key="domain.id" 
+                        :name="devChoices.domainsDict[domain].logo" 
+                        scale="1.5" class="logo"/>
+                    <span v-html="event.html" class='event'></span>
+                </div>
+            </transition-group>
         </div>
-            <!-- <div v-for="event in echeances.filter(event => event.sorted === key).filter(el=>el.domains.indexOf($route.params.id) !== -1)"  -->
     </div>
 </template>
 
@@ -122,5 +122,21 @@ export default {
         margin-left:0;
         color:hsl(351,25%,80%);
         color:hsl(0,0%,80%);
+    }
+    .eventSlide-enter, .eventSlide-leave-to {
+        opacity:0;
+        transform:translateX(-30px);
+    }
+    .eventSlide-leave, .eventSlide-enter-to {
+        opacity:1;
+    }
+    .eventSlide-enter-active, .eventSlide-leave-active {
+        transition: all 0.6s ease-out;
+    }
+    .eventSlide-leave-active {
+        position:absolute;
+    }
+    .eventSlide-move {
+        transition: transform 0.6s;
     }
 </style>
