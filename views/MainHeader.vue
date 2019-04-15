@@ -10,11 +10,11 @@
 <style scoped>
     h1 {
         font-size : 5vw;
-        color:yellow;
+        color:hsl(48, 94%, 66%);
     }
     #header {
         grid-area: header;
-        background-color: brown;
+        background-color: hsl(255, 68%, 22%);
         display:grid;
         grid-template-columns: 4fr 1fr;
         border:solid 1px blue;
