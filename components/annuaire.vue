@@ -7,7 +7,7 @@
       <div id="body" v-show="annuaireView">
         <h1 id="titre">
           Annuaire GSBdD
-          <v-icon id="closeButton" name="times-circle" scale="3"/>
+          <!-- <v-icon id="closeButton" name="times-circle" scale="3"/> -->
         </h1>
         <input
           type="text"

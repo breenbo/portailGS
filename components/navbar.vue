@@ -7,7 +7,7 @@
       :to="['Accueil'].indexOf(service.name) !== -1  ? '/' : service.name"
       :id="service.name"
     >
-      {{service.name}}
+      <div>{{service.name}}</div>
       <v-icon v-if="service.logo" :name="service.logo" scale="1.5" class="logo"/>
     </router-link>
     <div class="title" @mouseenter="showLinks=true" @mouseleave="showLinks=false">
@@ -66,15 +66,23 @@ export default {
   align-items: center;
   position: sticky;
   top: 0px;
-  z-index: 9;
+  z-index: 999;
   padding: 0 0.5vw;
+  margin:-4px 0 -4px -4px;
+}
+#Accueil {
+  display:block;
+  margin-left:1vw;
 }
 .title {
   color: white;
   font-size: 1.5vw;
-  padding-top: 8px;
+  padding:5px;
   cursor: pointer;
   border-radius: 30px;
+  display:grid;
+  grid-template-columns: repeat(2,1fr);
+  align-items:center;
 }
 .title:hover {
   border: solid 2px white;
@@ -85,7 +93,7 @@ export default {
 .subMenu {
   /* display:none; */
   position: absolute;
-  /* top:1vw; */
+  top:3vw;
   right: 16vw;
   min-width: 10vw;
   margin-left: 1.2vw;
@@ -113,7 +121,7 @@ input {
 .dropdown-enter-active,
 .dropdown-leave-active {
   transition: all 0.25s ease-out;
-  transform-origin: top center;
+  /* transform-origin: top center; */
 }
 .dropdown-enter,
 .dropdown-leave-to {
@@ -124,6 +132,6 @@ input {
 .dropdown-leave,
 .dropdown-enter-to {
   opacity: 1;
-  transform: scaleY(1);
+  /* transform: scaleY(1); */
 }
 </style>

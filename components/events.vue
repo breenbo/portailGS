@@ -116,13 +116,13 @@ export default {
   /* margin:20px 10px 0 0; */
   /* padding-bottom:20px; */
   text-align: right;
-  margin-top: 15px;
+  margin-top: 0.5vw;
   margin-right: 5px;
   color: hsl(351, 25%, 30%);
 }
 .logo {
   float: right;
-  font-size: 1em;
+  width:1.5vw;
   margin: 0 5px;
   margin-top: 0.45vw;
   margin-left: 0;

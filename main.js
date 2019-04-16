@@ -3,6 +3,7 @@ import Vue from "vue";
 // import font-awesome for cards logos
 import "vue-awesome/icons/cogs";
 import "vue-awesome/icons/male";
+import "vue-awesome/icons/users";
 import "vue-awesome/icons/anchor";
 import "vue-awesome/icons/chart-pie";
 import "vue-awesome/icons/bug";

@@ -62,7 +62,7 @@ export default {
         ],
         services: [
           { name: "Accueil", logo: "", active: true },
-          { name: "DICOM", logo: "male", active: false },
+          { name: "DICOM", logo: "users", active: false },
           { name: "PIL", logo: "tasks", active: false },
           { name: "SAF", logo: "shopping-cart", active: false },
           { name: "SAP", logo: "address-card", active: false },
@@ -81,7 +81,7 @@ export default {
         },
         domainsDict: {
           ceremonie: { logo: "male", color: "hsl(240,100%,5%)" },
-          DICOM: { nom: "Directeur", logo: "male", color: "brown" },
+          DICOM: { nom: "Directeur", logo: "users", color: "brown" },
           PIL: { nom: "Pilotage", logo: "tasks", color: "purple" },
           SAF: {
             nom: "Service Achats Finances",
@@ -352,9 +352,10 @@ export default {
 
 <style>
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 1vw;
   text-align: center;
   color: #2c3e50;
   margin: -10px;
@@ -380,5 +381,8 @@ export default {
 .headerSlide-enter-active,
 .headerSlide-leave-active {
   transition: all 0.6s ease-out;
+}
+.fa-icon {
+  width:1.6vw;
 }
 </style>

@@ -72,6 +72,7 @@ export default {
   background-color: hsl(351, 95%, 99%);
   border-radius: 5px;
   border: solid 1px hsl(0, 0%, 85%);
+  z-index:1;
   /* box-shadow : 0 4px 4px rgba(0, 0, 0, 0.2), 0 4px 4px rgba(0, 0, 0, 0.19); */
 }
 .centerCard:hover {
@@ -83,7 +84,7 @@ export default {
   font-size: 1.3vw;
   font-weight: bold;
   color: hsl(220, 10%, 20%);
-  background-color: hsl(220, 0%, 99%);
+  background-color: hsl(220, 0%, 98%);
   border-bottom: solid 1px hsl(0, 0%, 90%);
   padding: 0.8vw 0.5vw 0.5vw 0.5vw;
   cursor: pointer;
@@ -107,7 +108,7 @@ export default {
   color: purple;
 }
 .logo {
-  font-size: 2vw;
+  width:2vw;
   float: right;
   margin: 0 5px;
   color: hsl(0, 0%, 80%);

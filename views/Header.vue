@@ -27,9 +27,11 @@ h1 {
   grid-column-gap: 1vw;
   border: solid 1px blue;
   align-items: center;
+  z-index:99;
 }
 .logo {
   float: right;
   color: yellow;
+  width:10vw;
 }
 </style>
