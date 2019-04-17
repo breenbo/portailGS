@@ -1,7 +1,7 @@
 <template>
   <div id="main">
     <events v-if="echeances.length !== 0" :echeances="echeances" :devChoices="devChoices"></events>
-    <coms v-if="comm.length !== 0" :comm="comm" :devChoices="devChoices"></coms>
+    <coms v-if="comm.length !== 0" :comm="comm" :devChoices="devChoices" :annuaire="annuaire"></coms>
     <!-- <img alt="Vue logo" src="../assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>-->
   </div>
@@ -15,7 +15,7 @@ import coms from "../components/coms.vue";
 // import XLSX from 'xlsx'
 
 export default {
-  props: ["echeances", "devChoices", "comm"],
+  props: ["echeances", "devChoices", "comm", "annuaire"],
   name: "home",
   components: {
     events,

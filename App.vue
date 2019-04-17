@@ -5,7 +5,7 @@
     </transition>
     <navbar :services="devChoices.services" :liens="devChoices.liens"></navbar>
     <plan :annuaire="annuaire"></plan>
-    <router-view name="main" :echeances="echeances" :comm="comm" :devChoices="devChoices"></router-view>
+    <router-view name="main" :echeances="echeances" :comm="comm" :devChoices="devChoices" :annuaire="annuaire"></router-view>
   </div>
 </template>
 
@@ -210,7 +210,7 @@ export default {
             this.literalDate(obj);
             // create unique key for each object
             obj.key =
-              obj.Titre + obj.Date.getDate() + Math.random(0, 1).toString();
+              obj.Titre + obj.Date.getDate() + j.toString() + i.toString()
           }
           if (evt) {
             // sort futurs events
@@ -219,7 +219,7 @@ export default {
             this.createEventsHTML(obj);
             // create unique key for each object
             obj.key =
-              obj.Texte + obj.Echeance.getDate() + Math.random(0, 1).toString();
+              obj.Texte + obj.Echeance.getDate() + j.toString() + i.toString()
           }
           const len = obj.domains.length - 1;
           obj.color = this.devChoices.domainsDict[obj.domains[len]].color;

@@ -1,6 +1,15 @@
 <template>
   <div id="container">
     <h1>Communications</h1>
+
+    <article class="centerCard" v-if="birthdayView">
+      <div class="cardHeader" style="border-left:solid 6px blue">
+        Joyeux Anniversaire
+        <div class="comDate">{{today}}</div>
+      </div>
+      <div v-html="birthdayText" class="cardBody"></div>
+    </article>
+
     <transition-group name="comSlide" appear>
       <article v-for="com in filteredComs($route.params.id)" :key="com.key" class="centerCard">
         <div class="cardHeader" :style="borderClass(com)" @click="toggleBody(com)">
@@ -23,14 +32,17 @@
 
 <script>
 import { EventBus } from "../eventBus.js";
+// import { write } from 'fs';
 
 export default {
   data() {
     return {
-      search: /(?:)/
+      search: /(?:)/,
+      birthdayView: false,
+      birthdayText: ''
     };
   },
-  props: ["comm", "devChoices"],
+  props: ["comm", "devChoices", "annuaire"],
   methods: {
     // add color to border depending on object's color
     borderClass: obj => {
@@ -50,10 +62,58 @@ export default {
           const testString = `${el.Titre} ${el.Texte}`;
           return this.search.test(testString);
         });
+    },
+    anniversaireText() {
+      const today = new Date();
+      let birthdayArray = [];
+      let birthdayText = "";
+      for (const pers of this.annuaire.filter(el => el.dateNaissance)) {
+        // if (pers.dateNaissance.getDate() === today.getDate()){
+        if (
+          pers.dateNaissance.getDate() === today.getDate() &&
+          pers.dateNaissance.getMonth() === today.getMonth()
+        ) {
+          birthdayArray.push(pers);
+          this.birthdayView = true;
+        }
+      }
+      const len = birthdayArray.length;
+      birthdayText += `L'ensemble du personnel du GSBdD Antilles souhaite un joyeux anniversaire`;
+      for (let i = 0; i < len; i++) {
+        if (["M.", "Mme"].indexOf(birthdayArray[i].grade) !== -1) {
+          birthdayText += " à ";
+        } else {
+          birthdayText += " au ";
+        }
+        birthdayText += `<span style='color:hsl(351,85%,52%)'>${
+          birthdayArray[i].grade
+        } ${birthdayArray[i].prenom} ${birthdayArray[i].nom}</span>`;
+        let liaison = "";
+        if (i === len - 2) {
+          liaison = " et ";
+        } else if (i === len - 1) {
+          liaison = ".";
+        } else {
+          liaison = ", ";
+        }
+        birthdayText += liaison;
+      }
+      birthdayText += `<br/> Vous pouvez inonder ${
+        len > 1 ? "leurs boîtes" : "sa boîte"
+      } mail, et même aller ${len > 1 ? "leur" : "lui"} souhaiter en personne.`;
+      return this.birthdayText = birthdayText;
+      // return this.annuaire.filter(el => el.dateNaissance)[1].dateNaissance
     }
   },
-  created() {
+  computed: {
+    today() {
+      const today = new Date();
+      return today.getDate() + " " + this.devChoices.months[today.getMonth()];
+    },
+  },
+  created: function() {
     EventBus.$on("searchEdit", search => (this.search = search));
+    this.anniversaireText()
   }
 };
 </script>
@@ -69,10 +129,10 @@ export default {
   text-align: left;
   /* padding:0vw 0vw 1.5vw 0vw; */
   margin: 15px 0;
-  background-color: hsl(351, 95%, 99%);
+  background-color: hsl(0, 0%, 98%);
   border-radius: 5px;
   border: solid 1px hsl(0, 0%, 85%);
-  z-index:1;
+  z-index: 1;
   /* box-shadow : 0 4px 4px rgba(0, 0, 0, 0.2), 0 4px 4px rgba(0, 0, 0, 0.19); */
 }
 .centerCard:hover {
@@ -84,7 +144,7 @@ export default {
   font-size: 1.3vw;
   font-weight: bold;
   color: hsl(220, 10%, 20%);
-  background-color: hsl(220, 0%, 98%);
+  background-color: hsl(0, 0%, 98%);
   border-bottom: solid 1px hsl(0, 0%, 90%);
   padding: 0.8vw 0.5vw 0.5vw 0.5vw;
   cursor: pointer;
@@ -108,7 +168,7 @@ export default {
   color: purple;
 }
 .logo {
-  width:2vw;
+  width: 2vw;
   float: right;
   margin: 0 5px;
   color: hsl(0, 0%, 80%);
