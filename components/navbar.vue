@@ -6,11 +6,15 @@
       class="title"
       :to="['Accueil'].indexOf(service.name) !== -1  ? '/' : service.name"
       :id="service.name"
+      :style="{borderColor:borderColor, color:fontColor}"
     >
-      <div>{{service.name}}</div>
+      <div @mouseenter="hoverColor(service.name, true)" @mouseleave="hoverColor(service.name, false)">{{service.name}}</div>
       <v-icon v-if="service.logo" :name="service.logo" scale="1.5" class="logo"/>
     </router-link>
-    <div class="title" @mouseenter="showLinks=true" @mouseleave="showLinks=false">
+    <div id="menuLinks" class="title" 
+         @mouseenter="showLinks=true" 
+         @mouseleave="showLinks=false"
+    >
       {{liens.name}}
       <v-icon :name="liens.logo" scale="1.5" class="logo"/>
       <transition name="dropdown">
@@ -42,7 +46,7 @@ export default {
       showLinks: false
     };
   },
-  props: ["services", "liens"],
+  props: ["services", "liens", "domains"],
   methods: {
     showSubMenu() {
       // service.show = !service.show
@@ -51,6 +55,23 @@ export default {
     searchEdit() {
       this.searchRegexp = new RegExp(this.search, "i");
       EventBus.$emit("searchEdit", this.searchRegexp);
+    },
+    hoverColor(id, hover) {
+      const el = document.getElementById(id)
+      if (hover) {
+        this.$route.params.id ? el.style.color = this.domains[this.$route.params.id].supportColor : ""
+      } else {
+        this.$route.params.id ? el.style.color = this.domains[this.$route.params.id].darkFontColor : ""
+      }
+    }
+  },
+  computed: {
+    borderColor() {
+      return this.$route.params.id ? this.domains[this.$route.params.id].supportColor : ""
+      // return this.$route.params.id ? this.services[this.$route.params.id].fontColor : ""
+    },
+    fontColor () {
+      return this.$route.params.id ? this.domains[this.$route.params.id].darkFontColor : ""
     }
   }
 };
@@ -59,7 +80,7 @@ export default {
 <style scoped>
 #container {
   grid-area: navbar;
-  background-color: blue;
+  background-color: white;
   display: grid;
   grid-template-columns: repeat(9, 1fr) 20vw;
   grid-column-gap: 10px;
@@ -69,23 +90,22 @@ export default {
   z-index: 999;
   padding: 0 0.5vw;
   margin:-4px 0 -4px -4px;
+  box-shadow: 0 9px 9px rgba(0, 0, 0, 0.15), 0 9px 9px rgba(0, 0, 0, 0.10);
 }
 #Accueil {
   display:block;
   margin-left:1vw;
 }
 .title {
-  color: white;
+  /* color: hsl(209,18%,30%); */
+  color: #2c3e50;
   font-size: 1.5vw;
   padding:5px;
   cursor: pointer;
-  border-radius: 30px;
+  /* border-radius: 30px; */
   display:grid;
   grid-template-columns: repeat(2,1fr);
   align-items:center;
-}
-.title:hover {
-  border: solid 2px white;
 }
 .logo {
   margin-left: 0.5vw;
@@ -112,11 +132,11 @@ input {
 }
 .title {
   text-decoration: none;
-  color: white;
 }
 .router-link-exact-active {
-  background-color: red;
-  border: solid 2px white;
+  /* background-color: red; */
+  /* color:white; */
+  border-bottom: solid 4px hsl(209,18%,30%);
 }
 .dropdown-enter-active,
 .dropdown-leave-active {

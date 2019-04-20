@@ -1,6 +1,7 @@
 <template>
-  <div id="container">
+  <div id="container" :style="{color:darkColor, backgroundColor:backgroundColor}">
     <h1>Echeances</h1>
+    {{routeId}}
     <div v-for="(value, key) in temporalMarkup" :key="value.id">
       <div class="semaine">{{value}}</div>
       <transition-group name="eventSlide" appear>
@@ -44,12 +45,13 @@ export default {
         thisMonth: "30 jours",
         futur: "Plus tard"
       },
-      search: /(?:)/
+      search: /(?:)/,
+      routeId:''
     };
   },
   props: ["echeances", "logoDict", "devChoices"],
   methods: {
-    borderClass: obj => {
+    borderClass(obj) {
       const border = `border-left:solid 6px ${obj.color}`;
       return border;
     },
@@ -61,6 +63,14 @@ export default {
         .filter(el => this.search.test(el.Texte));
     }
   },
+  computed: {
+    backgroundColor () {
+      return this.$route.params.id ? this.devChoices.domainsDict[this.$route.params.id].lightbgcolor : ''
+    },
+    darkColor () {
+      return this.$route.params.id ? this.devChoices.domainsDict[this.$route.params.id].darkFontColor : ""
+    }
+  },
   created() {
     EventBus.$on("searchEdit", search => (this.search = search));
   }
@@ -70,7 +80,7 @@ export default {
 <style scoped>
 #container {
   grid-area: left;
-  background-color: lightgreen;
+  background-color: hsl(221,68%,93%);
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -119,6 +129,7 @@ export default {
   margin-top: 0.5vw;
   margin-right: 5px;
   color: hsl(351, 25%, 30%);
+  padding-bottom:10px;
 }
 .logo {
   float: right;

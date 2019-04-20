@@ -1,8 +1,6 @@
 <template>
     <div id="header">
         <h1>DICOM - GSBdD des Antilles</h1>
-        <!-- <img id="logoSCA" src="../assets/logoSCATransparent.png"> -->
-        <!-- <img id="logoSCA" :src=logosrc.dicom> -->
         <img id="logoSCA" src="../assets/logoSCATransparent.png">
     </div>
 </template>
@@ -14,7 +12,8 @@
     }
     #header {
         grid-area: header;
-        background-color: hsl(255, 68%, 22%);
+        /* background-color: hsl(255, 68%, 22%); */
+        background-color: hsl(234,62%,26%);
         display:grid;
         grid-template-columns: 4fr 1fr;
         border:solid 1px blue;

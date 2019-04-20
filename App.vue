@@ -3,9 +3,15 @@
     <transition name="headerSlide" appear>
       <router-view name="header" :services="devChoices.domainsDict" :key="$route.params.id"></router-view>
     </transition>
-    <navbar :services="devChoices.services" :liens="devChoices.liens"></navbar>
-    <plan :annuaire="annuaire"></plan>
-    <router-view name="main" :echeances="echeances" :comm="comm" :devChoices="devChoices" :annuaire="annuaire"></router-view>
+    <navbar :services="devChoices.services" :domains="devChoices.domainsDict" :liens="devChoices.liens"></navbar>
+    <plan :annuaire="annuaire" :services="devChoices.domainsDict"></plan>
+    <router-view
+      name="main"
+      :echeances="echeances"
+      :comm="comm"
+      :devChoices="devChoices"
+      :annuaire="annuaire"
+    ></router-view>
   </div>
 </template>
 
@@ -38,27 +44,14 @@ export default {
           "décembre"
         ],
         domaines: [
-          "ceremonie",
+          // "ceremonie",
           "DICOM",
           "PIL",
           "SAF",
           "SAP",
           "SSC",
           "SSV",
-          "epms",
-          "infra",
-          "logfin",
-          "mco",
-          "pil",
-          "prodef",
-          "HSCT",
-          "pc",
-          "service_courant",
-          "secu",
-          "secre",
-          "sst",
-          "ugm",
-          "b2m"
+          "HSCT"
         ],
         services: [
           { name: "Accueil", logo: "", active: true },
@@ -67,7 +60,7 @@ export default {
           { name: "SAF", logo: "shopping-cart", active: false },
           { name: "SAP", logo: "address-card", active: false },
           { name: "SSC", logo: "car", active: false },
-          { name: "SSV", logo: "bed", active: false },
+          { name: "SSV", logo: "building", active: false },
           { name: "HSCT", logo: "street-view", active: false }
         ],
         liens: {
@@ -76,44 +69,79 @@ export default {
           subMenu: [
             { nom: "FAA", link: "faa.com" },
             { nom: "GSBdD", link: "gsbdd.com" },
-            { nom: "SCA", link: "sca.com" }
+            { nom: "DCSCA", link: "sca.com" },
+            { nom: "Truc des vivres", link: "vivres.com" }
           ]
         },
         domainsDict: {
-          ceremonie: { logo: "male", color: "hsl(240,100%,5%)" },
-          DICOM: { nom: "Directeur", logo: "users", color: "brown" },
-          PIL: { nom: "Pilotage", logo: "tasks", color: "purple" },
+          DICOM: { 
+            nom: "Directeur", 
+            logo: "users", 
+            bgcolor: "#8B5D5D",
+            fontColor:"hsl(0,0%,13%)",
+            darkFontColor:"hsl(0,0%,13%)",
+            supportColor:"hsl(360,67%,44%)",
+            lightbgcolor:"#F0E9E9"
+          },
+          PIL: { 
+            nom: "Pilotage", 
+            logo: "tasks", 
+            // bgcolor: "hsl(295,85%,18%)",
+            bgcolor: "hsl(261,68%,84%)",
+            fontColor:"hsl(211,39%,23%)",
+            darkFontColor:"hsl(211,39%,23%)",
+            supportColor:"hsl(262,69%,61%)",
+            // lightbgcolor:"hsl(295,58%,93%)",
+            lightbgcolor:"hsl(262,61%,93%)"
+          },
           SAF: {
             nom: "Service Achats Finances",
             logo: "shopping-cart",
-            color: "green"
+            bgcolor: "hsl(44,92%,63%)",
+            fontColor:"hsl(0,0%,23%)",
+            darkFontColor:"hsl(0,0%,23%)",
+            supportColor:"hsl(162,63%,41%)",
+            lightbgcolor:"hsl(49,100%,96%)"
           },
           SAP: {
             nom: "Service Administration du Personnel",
             logo: "address-card",
-            color: "grey"
+            bgcolor: "hsl(184,77%,34%)",
+            fontColor:"hsl(42,15%,13%)",
+            darkFontColor:"hsl(42,15%,13%)",
+            supportColor:"hsl(42,78%,60%)",
+            lightbgcolor: "hsl(186,100%,94%)"
           },
           SSC: {
             nom: "Service Soutiens Communs",
             logo: "car",
-            color: "orange"
+            bgcolor: "hsl(122,39%,41%)",
+            fontColor:"hsl(0,0%,23%)",
+            darkFontColor:"hsl(0,0%,23%)",
+            supportColor:"hsl(360,67%,44%)",
+            lightbgcolor: "hsl(125,65%,93%)"
           },
-          SSV: { nom: "Service Soutien Vie", logo: "bed", color: "pink" },
-          HSCT: { nom: "HSCT - Incendie", logo: "street-view", color: "red" },
-          epms: { logo: "heartbeat", color: "hsl(270,100%,30%)" },
-          infra: { logo: "building", color: "hsl(0,0%,50%)" },
-          logfin: { logo: "shopping-cart", color: "hsl(52,100%,51%)" },
-          mco: { logo: "cogs", color: "hsl(200,29%,60%)" },
-          prodef: { logo: "shield-alt", color: "hsl(101,33%,36%)" },
-          pc: { logo: "users", color: "hsl(288,59%,58%)" },
-          pil: { logo: "exclamation-circle", color: "hsl(240,100%,10%)" },
-          service_courant: { logo: "tasks", color: "hsl(62,61%,44%)" },
-          secu: { logo: "fire-extinguisher", color: "hsl(0,100%,50%)" },
-          secre: { logo: "envelope", color: "hsl(160,100%,30%)" },
-          sst: { logo: "street-view", color: "hsl(200,100%,30%" },
-          ugm: { logo: "edit", color: "hsl(200,100%,30%" },
-          b2m: { logo: "ship", color: "hsl(167,70%,90%)" },
-          accueil: { logo: "male", color: "lightgray" }
+          SSV: { 
+            nom: "Service Soutien Vie", 
+            logo: "building", 
+            bgcolor: "hsl(14,89%,55%)",
+            fontColor:"hsl(0,0%,23%)",
+            darkFontColor:"hsl(0,0%,23%)",
+            supportColor:"hsl(227,50%,59%)",
+            lightbgcolor: "hsl(24,100%,93%)"
+          },
+          HSCT: { 
+            nom: "HSCT - Incendie", 
+            logo: "street-view", 
+            bgcolor: "hsl(360,67%,44%)",
+            fontColor:"hsl(42,15%,13%)",
+            darkFontColor:"hsl(42,15%,13%)",
+            supportColor:"hsl(42,57%,55%)",
+            lightbgcolor: "hsl(360,100%,97%)"
+          },
+          accueil: { 
+            logo: "male", 
+            bgcolor: "lightgray" }
         },
         balises: ["image", "lien", "lien1", "lien2", "lien3", "mail1", "mail2"]
       }
@@ -210,7 +238,7 @@ export default {
             this.literalDate(obj);
             // create unique key for each object
             obj.key =
-              obj.Titre + obj.Date.getDate() + j.toString() + i.toString()
+              obj.Titre + obj.Date.getDate() + j.toString() + i.toString();
           }
           if (evt) {
             // sort futurs events
@@ -219,10 +247,10 @@ export default {
             this.createEventsHTML(obj);
             // create unique key for each object
             obj.key =
-              obj.Texte + obj.Echeance.getDate() + j.toString() + i.toString()
+              obj.Texte + obj.Echeance.getDate() + j.toString() + i.toString();
           }
           const len = obj.domains.length - 1;
-          obj.color = this.devChoices.domainsDict[obj.domains[len]].color;
+          obj.color = this.devChoices.domainsDict[obj.domains[len]].bgcolor;
         }
         // store each object in array
         if (domain) {
@@ -358,6 +386,7 @@ export default {
   font-size: 1vw;
   text-align: center;
   color: #2c3e50;
+  /* background-color: hsl(216, 33%, 97%); */
   margin: -10px;
   margin-top: -30px;
   /* margin-top: 60px; */
@@ -383,6 +412,6 @@ export default {
   transition: all 0.6s ease-out;
 }
 .fa-icon {
-  width:1.6vw;
+  width: 1.6vw;
 }
 </style>

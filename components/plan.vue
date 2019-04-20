@@ -1,5 +1,5 @@
 <template>
-  <div id="container">
+  <div id="container" :style="{backgroundColor:backgroundColor, color:darkColor}">
     <h1>Plan</h1>
     <!-- <h2>{{essai.test}}</h2> -->
     <annuaire :annuaire="annuaire"></annuaire>
@@ -17,20 +17,25 @@ import annuaire from "./annuaire.vue";
 // import store from '../store'
 
 export default {
-  data() {
-    return {};
-  },
   components: {
     annuaire
   },
-  props: ["annuaire"]
+  props: ["annuaire", "services"],
+  computed: {
+    backgroundColor () {
+      return this.$route.params.id ? this.services[this.$route.params.id].lightbgcolor : ''
+    },
+    darkColor () {
+      return this.$route.params.id ? this.services[this.$route.params.id].darkFontColor : ""
+    }
+  }
 };
 </script>
 
 <style scoped>
 #container {
   grid-area: right;
-  background-color: cyan;
+  background-color: hsl(221,68%,93%);
   height: 100vh;
   position: sticky;
   top: 3vw;

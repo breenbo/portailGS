@@ -1,21 +1,29 @@
 <template>
-  <div id="header" :style="{backgroundColor:services[$route.params.id].color}">
-    <h1>{{services[$route.params.id].nom}}</h1>
-    <v-icon :name="services[$route.params.id].logo" scale="10" class="logo"/>
+  <div id="header" :style="{backgroundColor:backgroundColor}">
+    <h1 :style="{color:fontColor, borderColor:fontColor}">{{services[$route.params.id].nom}}</h1>
+    <v-icon :name="services[$route.params.id].logo" :style="{color:fontColor}" scale="10" class="logo"/>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["services"]
+  props: ["services"],
+  computed : {
+    fontColor() {
+      return this.$route.params.id ? this.services[this.$route.params.id].fontColor : ""
+    },
+    backgroundColor() {
+      return this.$route.params.id ? this.services[this.$route.params.id].bgcolor : ""
+    }
+  }
 };
 </script>
 
 <style scoped>
 h1 {
   font-size: 5vw;
-  color: yellow;
-  border-bottom: solid 6px yellow;
+  border-bottom: solid 6px;
+  padding-bottom:10px;
 }
 #header {
   grid-area: header;
@@ -31,7 +39,6 @@ h1 {
 }
 .logo {
   float: right;
-  color: yellow;
   width:10vw;
 }
 </style>
