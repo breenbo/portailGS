@@ -86,7 +86,7 @@ export default {
 }
 .event-card {
   text-align: left;
-  background-color: hsl(351, 95%, 99%);
+  background-color: hsl(351, 0%, 99%);
   min-height: 4vw;
   margin-top: 5px;
   margin-left: 1vw;

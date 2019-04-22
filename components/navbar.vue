@@ -14,13 +14,22 @@
     <div id="menuLinks" class="title" 
          @mouseenter="showLinks=true" 
          @mouseleave="showLinks=false"
+         :style="{color:fontColor}"
     >
-      {{liens.name}}
-      <v-icon :name="liens.logo" scale="1.5" class="logo"/>
+      Liens
+      <v-icon name="link" scale="1.5" class="logo"/>
       <transition name="dropdown">
-        <div class="subMenu" v-if="showLinks">
-          <div v-for="lien in liens.subMenu" :key="lien.id">
-            <a :href="lien.link">{{lien.nom}}</a>
+        <div class="subMenu" v-show="showLinks">
+          <div v-for="lien in liens" :key="lien.id">
+            <a :id="lien.nomLien"
+               :href="lien.adresse" 
+               :style="{color:fontColor}" 
+               @mouseenter="hoverColor(lien.nomLien, true)"
+               @mouseleave="hoverColor(lien.nomLien, false)"
+               class="subMenuLink"
+            >
+               {{lien.nomLien}}
+            </a>
           </div>
         </div>
       </transition>
@@ -107,23 +116,34 @@ export default {
   grid-template-columns: repeat(2,1fr);
   align-items:center;
 }
+.title:hover {
+  color:red;
+}
 .logo {
   margin-left: 0.5vw;
 }
 .subMenu {
-  /* display:none; */
   position: absolute;
   top:3vw;
   right: 16vw;
-  min-width: 10vw;
-  margin-left: 1.2vw;
-  padding: 1vw;
+  padding:1vw 2vw;
   border: solid 1px hsl(0, 0%, 85%);
   background-color: #fff;
   border-radius: 4px;
   text-align: left;
   font-size: 1.2vw;
   box-shadow: 0 24px 24px rgba(0, 0, 0, 0.2), 0 24px 24px rgba(0, 0, 0, 0.19);
+  display:grid;
+  grid-template-columns: repeat(2, auto);
+  grid-column-gap: 2vw;
+  grid-row-gap:2vh;
+}
+.subMenuLink {
+  text-decoration: none;
+  color: #2c3e50;
+}
+.subMenuLink:hover {
+  color:red;
 }
 input {
   margin: 0 1vw;
@@ -134,24 +154,19 @@ input {
   text-decoration: none;
 }
 .router-link-exact-active {
-  /* background-color: red; */
-  /* color:white; */
   border-bottom: solid 4px hsl(209,18%,30%);
 }
 .dropdown-enter-active,
 .dropdown-leave-active {
   transition: all 0.25s ease-out;
-  /* transform-origin: top center; */
 }
 .dropdown-enter,
 .dropdown-leave-to {
   transform: translateY(20px);
-  /* transform: scaleY(0.7); */
   opacity: 0;
 }
 .dropdown-leave,
 .dropdown-enter-to {
   opacity: 1;
-  /* transform: scaleY(1); */
 }
 </style>

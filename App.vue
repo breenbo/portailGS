@@ -3,15 +3,19 @@
     <transition name="headerSlide" appear>
       <router-view name="header" :services="devChoices.domainsDict" :key="$route.params.id"></router-view>
     </transition>
-    <navbar :services="devChoices.services" :domains="devChoices.domainsDict" :liens="devChoices.liens"></navbar>
+    <navbar 
+       :services="devChoices.services" 
+       :domains="devChoices.domainsDict" 
+       :liens="liens">
+    </navbar>
     <plan :annuaire="annuaire" :services="devChoices.domainsDict"></plan>
     <router-view
       name="main"
       :echeances="echeances"
       :comm="comm"
       :devChoices="devChoices"
-      :annuaire="annuaire"
-    ></router-view>
+      :annuaire="annuaire">
+    </router-view>
   </div>
 </template>
 
@@ -27,6 +31,7 @@ export default {
       echeances: [],
       comm: [],
       annuaire: [],
+      liens:[],
       meteo: [],
       devChoices: {
         months: [
@@ -63,16 +68,16 @@ export default {
           { name: "SSV", logo: "building", active: false },
           { name: "HSCT", logo: "street-view", active: false }
         ],
-        liens: {
-          name: "Liens",
-          logo: "link",
-          subMenu: [
-            { nom: "FAA", link: "faa.com" },
-            { nom: "GSBdD", link: "gsbdd.com" },
-            { nom: "DCSCA", link: "sca.com" },
-            { nom: "Truc des vivres", link: "vivres.com" }
-          ]
-        },
+        // liens: {
+        //   name: "Liens",
+        //   logo: "link",
+        //   subMenu: [
+        //     { nom: "FAA", link: "faa.com" },
+        //     { nom: "GSBdD", link: "gsbdd.com" },
+        //     { nom: "DCSCA", link: "sca.com" },
+        //     { nom: "Truc des vivres", link: "vivres.com" }
+        //   ]
+        // },
         domainsDict: {
           DICOM: { 
             nom: "Directeur", 
@@ -171,6 +176,7 @@ export default {
           this.echeances = this.createObject(response[0], false, true);
           this.comm = this.createObject(response[1], true, false);
           this.annuaire = this.createObject(response[2]);
+          this.liens = this.createObject(response[3], false, false);
           // localStorage.setItem('echeances',JSON.stringify(this.echeances))
           // localStorage.setItem('comm',JSON.stringify(this.comm))
           // localStorage.setItem('annuaire',JSON.stringify(this.annuaire))
@@ -265,6 +271,7 @@ export default {
         // sort array by date, echeance or nom
         objArray.sort((a, b) => b.Date - a.Date);
         objArray.sort((a, b) => a.Echeance - b.Echeance);
+        objArray.sort((a,b) => a.nomLien > b.nomLien);
         // use > for string, and - for numbers
         // objArray.sort((a, b) => a.nom > b.nom)
       }
@@ -315,18 +322,6 @@ export default {
         object.sorted = "futur";
       }
     },
-    // createDomainString (object) {
-    //     // input : object with some attributes filled with something not space
-    //     // output : object with domains attribute (domains : sst, pam, cdt)
-    //     object.domains = ''
-    //     for (const attr in object) {
-    //         if (this.devChoices.domaines.indexOf(attr) !== -1) {
-    //             if (/\S/.test(object[attr])) {
-    //             object.domains += `${attr} `
-    //             }
-    //         }
-    //     }
-    // },
     createDomainArray(object) {
       // input : object with some attributes filled with something not space
       // output : object with array domains attribute (domains : sst, pam, cdt)

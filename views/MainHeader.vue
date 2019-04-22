@@ -1,6 +1,6 @@
 <template>
     <div id="header">
-        <h1>DICOM - GSBdD des Antilles</h1>
+        <h1>DICOM des Antilles</h1>
         <img id="logoSCA" src="../assets/logoSCATransparent.png">
     </div>
 </template>
