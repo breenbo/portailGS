@@ -1,14 +1,15 @@
 <template>
-  <div id="container" :style="{backgroundColor:backgroundColor, color:darkColor}">
+  <div id="container" :style="{backgroundColor:backgroundColor, color:fontColor}">
     <h1>Plan</h1>
-    <!-- <h2>{{essai.test}}</h2> -->
-    <annuaire :annuaire="annuaire"></annuaire>
-    <h2>Feuille de service</h2>
-    <h2>Programme</h2>
-    <h2>Organnuaire</h2>
-    <h2>Trombinoscope</h2>
-    <h2>Annuaire FAA</h2>
-    <h2>Plan Desaix</h2>
+    <annuaire :annuaire="annuaire" :services="services"></annuaire>
+    <h2 v-for="item in plan" 
+        :key="item.id" 
+        :id="item.nom" 
+        @mouseenter="hoverColor($event, true)"
+        @mouseleave="hoverColor($event, false)"
+    >
+      {{item.nom}}
+    </h2>
   </div>
 </template>
 
@@ -17,17 +18,48 @@ import annuaire from "./annuaire.vue";
 // import store from '../store'
 
 export default {
+  data() {
+    return {
+      plan: [
+        { nom: "Feuille de service", lien: "" },
+        { nom: "Programme", lien: "" },
+        { nom: "Organnuaire", lien: "" },
+        { nom: "Trombinoscope", lien: "" },
+        { nom: "Annuaire FAA", lien: "" },
+        { nom: "Plan Desaix", lien: "" }
+      ]
+    };
+  },
   components: {
     annuaire
   },
   props: ["annuaire", "services"],
-  computed: {
-    backgroundColor () {
-      return this.$route.params.id ? this.services[this.$route.params.id].lightbgcolor : ''
-    },
-    darkColor () {
-      return this.$route.params.id ? this.services[this.$route.params.id].darkFontColor : ""
+  methods: {
+    hoverColor(event, hover) {
+      if (hover) {
+        this.$route.params.id
+          ? (event.target.style.color = this.services[this.$route.params.id].supportColor)
+          : "";
+      } else {
+        this.$route.params.id
+          ? (event.target.style.color = this.services[
+              this.$route.params.id
+            ].darkFontColor)
+          : "";
+      }
     }
+  },
+  computed: {
+    backgroundColor() {
+      return this.$route.params.id
+        ? this.services[this.$route.params.id].lightbgcolor
+        : "";
+    },
+    fontColor() {
+      return this.$route.params.id
+        ? this.services[this.$route.params.id].darkFontColor
+        : "";
+    },
   }
 };
 </script>
@@ -35,7 +67,7 @@ export default {
 <style scoped>
 #container {
   grid-area: right;
-  background-color: hsl(221,68%,93%);
+  background-color: hsl(221, 68%, 93%);
   height: 100vh;
   position: sticky;
   top: 3vw;
@@ -46,6 +78,6 @@ h2 {
   padding-left: 2vw;
 }
 h2:hover {
-  border-left: solid 6px black;
+  color:red;
 }
 </style>

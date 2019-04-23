@@ -6,15 +6,22 @@
     <navbar 
        :services="devChoices.services" 
        :domains="devChoices.domainsDict" 
-       :liens="liens">
+       :liens="liens"
+    >
     </navbar>
-    <plan :annuaire="annuaire" :services="devChoices.domainsDict"></plan>
+    <plan :annuaire="annuaire" 
+          :services="devChoices.domainsDict"
+    >
+    </plan>
+    <!-- pass annuaire for birthday card -->
     <router-view
       name="main"
       :echeances="echeances"
       :comm="comm"
       :devChoices="devChoices"
-      :annuaire="annuaire">
+      :annuaire="annuaire"
+      :referentiel="referentiel"
+    >
     </router-view>
   </div>
 </template>
@@ -32,6 +39,7 @@ export default {
       comm: [],
       annuaire: [],
       liens:[],
+      referentiel:[],
       meteo: [],
       devChoices: {
         months: [
@@ -68,16 +76,6 @@ export default {
           { name: "SSV", logo: "building", active: false },
           { name: "HSCT", logo: "street-view", active: false }
         ],
-        // liens: {
-        //   name: "Liens",
-        //   logo: "link",
-        //   subMenu: [
-        //     { nom: "FAA", link: "faa.com" },
-        //     { nom: "GSBdD", link: "gsbdd.com" },
-        //     { nom: "DCSCA", link: "sca.com" },
-        //     { nom: "Truc des vivres", link: "vivres.com" }
-        //   ]
-        // },
         domainsDict: {
           DICOM: { 
             nom: "Directeur", 
@@ -177,6 +175,7 @@ export default {
           this.comm = this.createObject(response[1], true, false);
           this.annuaire = this.createObject(response[2]);
           this.liens = this.createObject(response[3], false, false);
+          this.referentiel = this.createObject(response[4], false, false);
           // localStorage.setItem('echeances',JSON.stringify(this.echeances))
           // localStorage.setItem('comm',JSON.stringify(this.comm))
           // localStorage.setItem('annuaire',JSON.stringify(this.annuaire))
@@ -227,9 +226,9 @@ export default {
         const objLen = array[i].length;
         // create object for each line in the array
         let obj = {};
-        obj.color = "";
+        evt || coms ? obj.color = "": '';
         obj.bodyView = false;
-        obj.annuaireView = true;
+        // obj.annuaireView = true;
         // fill the object with all the element in a particular array, except empty and STOP
         for (let j = 0; j != objLen; j++) {
           if (array[i][j]) {
@@ -256,7 +255,7 @@ export default {
               obj.Texte + obj.Echeance.getDate() + j.toString() + i.toString();
           }
           const len = obj.domains.length - 1;
-          obj.color = this.devChoices.domainsDict[obj.domains[len]].bgcolor;
+          evt || coms ? obj.color = this.devChoices.domainsDict[obj.domains[len]].bgcolor : '';
         }
         // store each object in array
         if (domain) {
@@ -391,7 +390,7 @@ export default {
     "navbar navbar navbar"
     "left center right";
   grid-template-columns: 17vw 67vw 15.4vw;
-  grid-template-rows: 18vw 3vw 80vh;
+  grid-template-rows: 20vw 3vw 80vh;
 }
 .headerSlide-enter,
 .headerSlide-leave-to {

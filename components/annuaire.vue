@@ -1,10 +1,18 @@
 <template>
   <div id="annuaire">
     <div id="title">
-      <h2 @click="init">Annuaire GSBdD</h2>
+      <h2 @click="init"
+          @mouseenter="hoverColor($event, true)"
+          @mouseleave="hoverColor($event, false)"
+      >
+        Annuaire GSBdD
+      </h2>
     </div>
     <transition name="fade">
-      <div id="body" v-show="annuaireView">
+      <div id="body" 
+           v-show="annuaireView"
+           :style="{borderLeftColor:borderColor}"
+      >
         <h1 id="titre">
           Annuaire GSBdD
           <!-- <v-icon id="closeButton" name="times-circle" scale="3"/> -->
@@ -45,6 +53,9 @@ export default {
         }
         return regexp.test(testString);
       });
+    },
+    borderColor() {
+      return this.$route.params.id ? this.services[this.$route.params.id].supportColor : ""
     }
   },
   methods: {
@@ -53,6 +64,19 @@ export default {
       this.annuaireView = !this.annuaireView;
       // give focus on input field : use nextTick to wait creation
       this.$nextTick(() => document.getElementById("input").focus());
+    },
+    hoverColor(event, hover) {
+      if (hover) {
+        this.$route.params.id
+          ? (event.target.style.color = this.services[this.$route.params.id].supportColor)
+          : "";
+      } else {
+        this.$route.params.id
+          ? (event.target.style.color = this.services[
+              this.$route.params.id
+            ].darkFontColor)
+          : "";
+      }
     }
   },
   mounted() {
@@ -61,7 +85,7 @@ export default {
       this.annuaireView = false;
     };
   },
-  props: ["annuaire"]
+  props: ["annuaire", "services"]
 };
 </script>
 
@@ -71,9 +95,9 @@ h2 {
   padding-left: 2vw;
   cursor: pointer;
 }
-h2:hover {
+/* h2:hover {
   border-left: solid 6px black;
-}
+} */
 #body {
   position: absolute;
   top: 8vh;
@@ -86,6 +110,7 @@ h2:hover {
   min-width: 60vw;
   background-color: white;
   box-shadow: 0 24px 24px rgba(0, 0, 0, 0.2), 0 24px 24px rgba(0, 0, 0, 0.19);
+  border-left:solid 8px;
 }
 #input {
   width: 58vw;

@@ -1,6 +1,9 @@
 <template>
   <div id="main">
-    <events v-if="echeances.length !== 0" :echeances="echeances" :devChoices="devChoices">
+    <events v-if="echeances.length !== 0" 
+            :echeances="echeances" 
+            :devChoices="devChoices"
+    >
     </events>
     <!-- skeleton to load on fetching -->
       <div v-else id="skeleton">
@@ -13,7 +16,13 @@
           </div>
         </template>
       </div>
-    <coms v-if="comm.length !== 0" :comm="comm" :devChoices="devChoices" :annuaire="annuaire"></coms>
+    <coms v-if="comm.length !== 0" 
+          :comm="comm" 
+          :devChoices="devChoices" 
+          :annuaire="annuaire"
+          :referentiel="referentiel"
+    >
+    </coms>
     <!-- skeleton to load on fetching -->
     <div v-else>
       <h1>Communications</h1>
@@ -38,7 +47,7 @@ import coms from "../components/coms.vue";
 // import XLSX from 'xlsx'
 
 export default {
-  props: ["echeances", "devChoices", "comm", "annuaire"],
+  props: ["echeances", "devChoices", "comm", "annuaire", "referentiel"],
   name: "home",
   components: {
     events,

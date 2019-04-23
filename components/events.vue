@@ -1,9 +1,13 @@
 <template>
-  <div id="container" :style="{color:darkColor, backgroundColor:backgroundColor}">
-    <h1>Echeances</h1>
+  <div id="container" :style="{color:fontColor, backgroundColor:backgroundColor}">
+    <h1>Echéances</h1>
     {{routeId}}
     <div v-for="(value, key) in temporalMarkup" :key="value.id">
-      <div class="semaine">{{value}}</div>
+      <div class="semaine" 
+           :style="{color:fontColor, borderBottomColor:fontColor}"
+      >
+        {{value}}
+      </div>
       <transition-group name="eventSlide" appear>
         <div
           v-for="event in filteredEcheances(key, $route.params.id)"
@@ -67,8 +71,11 @@ export default {
     backgroundColor () {
       return this.$route.params.id ? this.devChoices.domainsDict[this.$route.params.id].lightbgcolor : ''
     },
-    darkColor () {
+    fontColor () {
       return this.$route.params.id ? this.devChoices.domainsDict[this.$route.params.id].darkFontColor : ""
+    },
+    supportColor () {
+      return this.$route.params.id ? this.devChoices.domainsDict[this.$route.params.id].supportColor : ""
     }
   },
   created() {
@@ -108,7 +115,7 @@ export default {
   font-size: 1.5vw;
   margin: 1.5vw 1vw 1vw 1vw;
   text-align: right;
-  border-bottom: solid 1px hsl(351, 85%, 52%);
+  border-bottom: solid 1px;
   padding-bottom: 0.5vw;
 }
 .mois,

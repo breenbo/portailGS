@@ -27,6 +27,26 @@
         <div v-html="com.Texte" v-if="com.bodyView" class="cardBody"></div>
       </article>
     </transition-group>
+
+<!-- show referentiel link if there are for specific page -->
+    <div v-if="filteredRefs($route.params.id).length > 0">
+      <h1 id="refTitle" :style="{borderColor:borderColor}">Référentiel {{$route.params.id}}</h1>
+      <div class="refContainer">
+        <div v-for="ref in filteredRefs($route.params.id)" :key="ref.id">
+          <a :href="ref.fichier" target="_blank">
+            <span v-if="ref.image"><img :src="ref.image" class="refImage"/></span>
+            <span v-else
+                  @mouseenter="hoverColor($event,true)"
+                  @mouseleave="hoverColor($event,false)"
+            >
+              {{ref.nom}}
+            </span>
+            <!-- add specific color on hover -->
+          </a>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -42,7 +62,7 @@ export default {
       birthdayText: ''
     };
   },
-  props: ["comm", "devChoices", "annuaire"],
+  props: ["comm", "devChoices", "annuaire", "referentiel"],
   methods: {
     // add color to border depending on object's color
     borderClass: obj => {
@@ -62,6 +82,10 @@ export default {
           const testString = `${el.Titre} ${el.Texte}`;
           return this.search.test(testString);
         });
+    },
+    filteredRefs(id) {
+      return this.referentiel
+        .filter(el => (id === undefined ? false : el.domains.indexOf(id) !== -1))
     },
     anniversaireText() {
       const today = new Date();
@@ -103,6 +127,17 @@ export default {
       } mail, et même aller ${len > 1 ? "leur" : "lui"} souhaiter en personne.`;
       return this.birthdayText = birthdayText;
       // return this.annuaire.filter(el => el.dateNaissance)[1].dateNaissance
+    },
+    hoverColor(event, hover) {
+      if (hover) {
+        this.$route.params.id
+          ? (event.target.style.color = this.devChoices.domainsDict[this.$route.params.id].supportColor)
+          : "";
+      } else {
+        this.$route.params.id
+          ? (event.target.style.color = this.devChoices.domainsDict[this.$route.params.id].darkFontColor)
+          : "";
+      }
     }
   },
   computed: {
@@ -110,6 +145,9 @@ export default {
       const today = new Date();
       return today.getDate() + " " + this.devChoices.months[today.getMonth()];
     },
+    borderColor() {
+      return this.$route.params.id ? this.devChoices.domainsDict[this.$route.params.id].supportColor : ""
+    }
   },
   created: function() {
     EventBus.$on("searchEdit", search => (this.search = search));
@@ -168,10 +206,32 @@ export default {
   color: purple;
 }
 .logo {
+  height:3vw;
   width: 2vw;
   float: right;
-  margin: 0 5px;
+  margin: -0.2vw 5px;
   color: hsl(0, 0%, 80%);
+}
+.refContainer {
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 1vw;
+  grid-row-gap: 1vw;
+  align-items: center;
+  font-size:1.5vw;
+}
+#refTitle {
+  text-align: left;
+  margin-top:10vh;
+  padding-left:1vw;
+  padding: 2vh 0 2vh 1vw;
+  border-bottom:solid 2px;
+  border-left:solid 12px;
+  border-bottom-left-radius: 6px;
+  border-top-left-radius: 6px;
+}
+.refImage {
+  width:75%;
 }
 .comSlide-enter,
 .comSlide-leave-to {

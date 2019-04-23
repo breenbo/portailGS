@@ -8,7 +8,11 @@
       :id="service.name"
       :style="{borderColor:borderColor, color:fontColor}"
     >
-      <div @mouseenter="hoverColor(service.name, true)" @mouseleave="hoverColor(service.name, false)">{{service.name}}</div>
+      <div @mouseenter="hoverColor(service.name, true)" 
+           @mouseleave="hoverColor(service.name, false)"
+      >
+        {{service.name}}
+      </div>
       <v-icon v-if="service.logo" :name="service.logo" scale="1.5" class="logo"/>
     </router-link>
     <div id="menuLinks" class="title" 
@@ -19,7 +23,7 @@
       Liens
       <v-icon name="link" scale="1.5" class="logo"/>
       <transition name="dropdown">
-        <div class="subMenu" v-show="showLinks">
+        <div class="subMenu" v-if="showLinks">
           <div v-for="lien in liens" :key="lien.id">
             <a :id="lien.nomLien"
                :href="lien.adresse" 
@@ -77,7 +81,6 @@ export default {
   computed: {
     borderColor() {
       return this.$route.params.id ? this.domains[this.$route.params.id].supportColor : ""
-      // return this.$route.params.id ? this.services[this.$route.params.id].fontColor : ""
     },
     fontColor () {
       return this.$route.params.id ? this.domains[this.$route.params.id].darkFontColor : ""
@@ -91,14 +94,14 @@ export default {
   grid-area: navbar;
   background-color: white;
   display: grid;
-  grid-template-columns: repeat(9, 1fr) 20vw;
+  grid-template-columns: repeat(9, 1fr) 25vw;
   grid-column-gap: 10px;
   align-items: center;
   position: sticky;
   top: 0px;
   z-index: 999;
   padding: 0 0.5vw;
-  margin:-4px 0 -4px -4px;
+  /* margin:-4px 0 -4px -4px; */
   box-shadow: 0 9px 9px rgba(0, 0, 0, 0.15), 0 9px 9px rgba(0, 0, 0, 0.10);
 }
 #Accueil {
@@ -109,22 +112,24 @@ export default {
   /* color: hsl(209,18%,30%); */
   color: #2c3e50;
   font-size: 1.5vw;
-  padding:5px;
+  /* padding:5px; */
   cursor: pointer;
   /* border-radius: 30px; */
   display:grid;
   grid-template-columns: repeat(2,1fr);
   align-items:center;
+  justify-items: start;
 }
 .title:hover {
   color:red;
 }
 .logo {
   margin-left: 0.5vw;
+  /* justify-self: center; */
 }
 .subMenu {
   position: absolute;
-  top:3vw;
+  top:2.5vw;
   right: 16vw;
   padding:1vw 2vw;
   border: solid 1px hsl(0, 0%, 85%);
