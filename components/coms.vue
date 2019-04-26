@@ -29,23 +29,24 @@
     </transition-group>
 
 <!-- show referentiel link if there are for specific page -->
-    <div v-if="filteredRefs($route.params.id).length > 0">
+<transition-group name="comSlide" appear>
+    <div v-if="filteredRefs($route.params.id).length > 0" :key="$route.params.id">
       <h1 id="refTitle" :style="{borderColor:borderColor}">Référentiel {{$route.params.id}}</h1>
       <div class="refContainer">
         <div v-for="ref in filteredRefs($route.params.id)" :key="ref.id">
-          <a :href="ref.fichier" target="_blank">
-            <span v-if="ref.image"><img :src="ref.image" class="refImage"/></span>
+          <a :href="'referentiel/' + ref.fichier" target="_blank" :style="{color:fontColor}">
+            <span v-if="ref.image"><img :src="'referentiel/' + ref.image" class="refImage"/></span>
             <span v-else
                   @mouseenter="hoverColor($event,true)"
                   @mouseleave="hoverColor($event,false)"
             >
               {{ref.nom}}
             </span>
-            <!-- add specific color on hover -->
           </a>
         </div>
       </div>
     </div>
+</transition-group>
 
   </div>
 </template>
@@ -102,7 +103,7 @@ export default {
         }
       }
       const len = birthdayArray.length;
-      birthdayText += `L'ensemble du personnel du GSBdD Antilles souhaite un joyeux anniversaire`;
+      birthdayText += `L'ensemble du personnel de la DICOM Antilles souhaite un joyeux anniversaire`;
       for (let i = 0; i < len; i++) {
         if (["M.", "Mme"].indexOf(birthdayArray[i].grade) !== -1) {
           birthdayText += " à ";
@@ -147,6 +148,11 @@ export default {
     },
     borderColor() {
       return this.$route.params.id ? this.devChoices.domainsDict[this.$route.params.id].supportColor : ""
+    },
+    fontColor() {
+      return this.$route.params.id
+        ? this.devChoices.domainsDict[this.$route.params.id].darkFontColor
+        : "";
     }
   },
   created: function() {
@@ -220,6 +226,9 @@ export default {
   align-items: center;
   font-size:1.5vw;
 }
+.refContainer a {
+  text-decoration:none;
+}
 #refTitle {
   text-align: left;
   margin-top:10vh;
@@ -232,6 +241,10 @@ export default {
 }
 .refImage {
   width:75%;
+  box-shadow : 0 4px 4px rgba(0, 0, 0, 0.2), 0 4px 4px rgba(0, 0, 0, 0.19);
+}
+.refImage:hover {
+  box-shadow : 0 16px 16px rgba(0, 0, 0, 0.2), 0 16px 16px rgba(0, 0, 0, 0.19);
 }
 .comSlide-enter,
 .comSlide-leave-to {

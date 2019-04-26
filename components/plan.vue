@@ -1,14 +1,24 @@
 <template>
   <div id="container" :style="{backgroundColor:backgroundColor, color:fontColor}">
     <h1>Plan</h1>
-    <annuaire :annuaire="annuaire" :services="services"></annuaire>
-    <h2 v-for="item in plan" 
-        :key="item.id" 
-        :id="item.nom" 
-        @mouseenter="hoverColor($event, true)"
-        @mouseleave="hoverColor($event, false)"
+    <annuaire :annuaire="annuaire" 
+              :services="services"
+              :style="{color:fontColor}"
     >
-      {{item.nom}}
+    </annuaire>
+    <h2 v-for="item in liensPlan"
+        :key="item.id"
+        :id="item.nom"
+    >
+      <hr v-if="item.nom === '--'" />
+      <a v-else
+         :href="item.lien"
+         :style="{color:fontColor}"
+         @mouseenter="hoverColor($event, true)"
+         @mouseleave="hoverColor($event, false)"
+         target="_blank">
+        {{item.nom}}
+      </a>
     </h2>
   </div>
 </template>
@@ -18,22 +28,10 @@ import annuaire from "./annuaire.vue";
 // import store from '../store'
 
 export default {
-  data() {
-    return {
-      plan: [
-        { nom: "Feuille de service", lien: "" },
-        { nom: "Programme", lien: "" },
-        { nom: "Organnuaire", lien: "" },
-        { nom: "Trombinoscope", lien: "" },
-        { nom: "Annuaire FAA", lien: "" },
-        { nom: "Plan Desaix", lien: "" }
-      ]
-    };
-  },
   components: {
     annuaire
   },
-  props: ["annuaire", "services"],
+  props: ["annuaire", "services", "liensPlan"],
   methods: {
     hoverColor(event, hover) {
       if (hover) {
@@ -59,8 +57,8 @@ export default {
       return this.$route.params.id
         ? this.services[this.$route.params.id].darkFontColor
         : "";
-    },
-  }
+    }
+  },
 };
 </script>
 
@@ -79,5 +77,12 @@ h2 {
 }
 h2:hover {
   color:red;
+}
+a {
+  text-decoration:none;
+  color: #2c3e50;
+}
+a:hover {
+    color:red;
 }
 </style>

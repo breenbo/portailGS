@@ -8,26 +8,26 @@
       :id="service.name"
       :style="{borderColor:borderColor, color:fontColor}"
     >
-      <div @mouseenter="hoverColor(service.name, true)" 
+      <v-icon v-if="service.logo" :name="service.logo" scale="1.5" class="logo"/>
+      <span @mouseenter="hoverColor(service.name, true)"
            @mouseleave="hoverColor(service.name, false)"
       >
         {{service.name}}
-      </div>
-      <v-icon v-if="service.logo" :name="service.logo" scale="1.5" class="logo"/>
+      </span>
     </router-link>
-    <div id="menuLinks" class="title" 
-         @mouseenter="showLinks=true" 
+    <div id="menuLinks" class="title"
+         @mouseenter="showLinks=true"
          @mouseleave="showLinks=false"
          :style="{color:fontColor}"
     >
-      Liens
       <v-icon name="link" scale="1.5" class="logo"/>
+      Liens
       <transition name="dropdown">
         <div class="subMenu" v-if="showLinks">
           <div v-for="lien in liens" :key="lien.id">
             <a :id="lien.nomLien"
-               :href="lien.adresse" 
-               :style="{color:fontColor}" 
+               :href="lien.adresse"
+               :style="{color:fontColor}"
                @mouseenter="hoverColor(lien.nomLien, true)"
                @mouseleave="hoverColor(lien.nomLien, false)"
                class="subMenuLink"
@@ -72,9 +72,13 @@ export default {
     hoverColor(id, hover) {
       const el = document.getElementById(id)
       if (hover) {
-        this.$route.params.id ? el.style.color = this.domains[this.$route.params.id].supportColor : ""
+        this.$route.params.id 
+              ?  el.style.color = this.domains[this.$route.params.id].supportColor 
+              : el.style.color = "red"
       } else {
-        this.$route.params.id ? el.style.color = this.domains[this.$route.params.id].darkFontColor : ""
+        this.$route.params.id 
+              ? el.style.color = this.domains[this.$route.params.id].darkFontColor 
+              : el.style.color = "#2c3e50"
       }
     }
   },
@@ -95,7 +99,7 @@ export default {
   background-color: white;
   display: grid;
   grid-template-columns: repeat(9, 1fr) 25vw;
-  grid-column-gap: 10px;
+  grid-column-gap: 2vw;
   align-items: center;
   position: sticky;
   top: 0px;
@@ -116,13 +120,13 @@ export default {
   cursor: pointer;
   /* border-radius: 30px; */
   display:grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: 2.5vw 1fr;
   align-items:center;
   justify-items: start;
 }
-.title:hover {
+/*.title:hover {
   color:red;
-}
+} */
 .logo {
   margin-left: 0.5vw;
   /* justify-self: center; */
@@ -147,9 +151,9 @@ export default {
   text-decoration: none;
   color: #2c3e50;
 }
-.subMenuLink:hover {
+/* .subMenuLink:hover {
   color:red;
-}
+} */
 input {
   margin: 0 1vw;
   font-size: 1.2vw;

@@ -12,12 +12,10 @@
     }
     #header {
         grid-area: header;
-        /* background-color: hsl(255, 68%, 22%); */
         background-color: hsl(234,62%,26%);
         display:grid;
         grid-template-columns: 4fr 1fr;
         border:solid 1px blue;
-        /* margin:-5vh; */
         align-items: center;
     }
     #logoSCA {

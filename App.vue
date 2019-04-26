@@ -3,14 +3,15 @@
     <transition name="headerSlide" appear>
       <router-view name="header" :services="devChoices.domainsDict" :key="$route.params.id"></router-view>
     </transition>
-    <navbar 
-       :services="devChoices.services" 
-       :domains="devChoices.domainsDict" 
+    <navbar
+       :services="devChoices.services"
+       :domains="devChoices.domainsDict"
        :liens="liens"
     >
     </navbar>
-    <plan :annuaire="annuaire" 
+    <plan :annuaire="annuaire"
           :services="devChoices.domainsDict"
+          :liensPlan="liensPlan"
     >
     </plan>
     <!-- pass annuaire for birthday card -->
@@ -39,6 +40,7 @@ export default {
       comm: [],
       annuaire: [],
       liens:[],
+      liensPlan:[],
       referentiel:[],
       meteo: [],
       devChoices: {
@@ -77,18 +79,18 @@ export default {
           { name: "HSCT", logo: "street-view", active: false }
         ],
         domainsDict: {
-          DICOM: { 
-            nom: "Directeur", 
-            logo: "users", 
+          DICOM: {
+            nom: "Directeur",
+            logo: "users",
             bgcolor: "#8B5D5D",
             fontColor:"hsl(0,0%,13%)",
             darkFontColor:"hsl(0,0%,13%)",
             supportColor:"hsl(360,67%,44%)",
             lightbgcolor:"#F0E9E9"
           },
-          PIL: { 
-            nom: "Pilotage", 
-            logo: "tasks", 
+          PIL: {
+            nom: "Pilotage",
+            logo: "tasks",
             // bgcolor: "hsl(295,85%,18%)",
             bgcolor: "hsl(261,68%,84%)",
             fontColor:"hsl(211,39%,23%)",
@@ -124,26 +126,26 @@ export default {
             supportColor:"hsl(360,67%,44%)",
             lightbgcolor: "hsl(125,65%,93%)"
           },
-          SSV: { 
-            nom: "Service Soutien Vie", 
-            logo: "building", 
+          SSV: {
+            nom: "Service Soutien Vie",
+            logo: "building",
             bgcolor: "hsl(14,89%,55%)",
             fontColor:"hsl(0,0%,23%)",
             darkFontColor:"hsl(0,0%,23%)",
             supportColor:"hsl(227,50%,59%)",
             lightbgcolor: "hsl(24,100%,93%)"
           },
-          HSCT: { 
-            nom: "HSCT - Incendie", 
-            logo: "street-view", 
+          HSCT: {
+            nom: "HSCT - Incendie",
+            logo: "street-view",
             bgcolor: "hsl(360,67%,44%)",
             fontColor:"hsl(42,15%,13%)",
             darkFontColor:"hsl(42,15%,13%)",
             supportColor:"hsl(42,57%,55%)",
             lightbgcolor: "hsl(360,100%,97%)"
           },
-          accueil: { 
-            logo: "male", 
+          accueil: {
+            logo: "male",
             bgcolor: "lightgray" }
         },
         balises: ["image", "lien", "lien1", "lien2", "lien3", "mail1", "mail2"]
@@ -173,9 +175,10 @@ export default {
         .then(response => {
           this.echeances = this.createObject(response[0], false, true);
           this.comm = this.createObject(response[1], true, false);
-          this.annuaire = this.createObject(response[2]);
-          this.liens = this.createObject(response[3], false, false);
-          this.referentiel = this.createObject(response[4], false, false);
+          this.referentiel = this.createObject(response[2], false, false);
+          this.annuaire = this.createObject(response[3]);
+          this.liens = this.createObject(response[4], false, false);
+          this.liensPlan = this.createObject(response[5], false, false);
           // localStorage.setItem('echeances',JSON.stringify(this.echeances))
           // localStorage.setItem('comm',JSON.stringify(this.comm))
           // localStorage.setItem('annuaire',JSON.stringify(this.annuaire))

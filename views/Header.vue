@@ -1,6 +1,10 @@
 <template>
   <div id="header" :style="{backgroundColor:backgroundColor}">
-    <h1 :style="{color:fontColor, borderColor:fontColor}">{{services[$route.params.id].nom}}</h1>
+    <h1 :style="{color:fontColor, borderColor:fontColor}"
+        :data-text="services[$route.params.id].nom"
+    >
+        {{services[$route.params.id].nom}}
+    </h1>
     <v-icon :name="services[$route.params.id].logo" :style="{color:fontColor}" scale="10" class="logo"/>
   </div>
 </template>
@@ -33,7 +37,6 @@ h1 {
   display: grid;
   grid-template-columns: 4fr 1fr;
   grid-column-gap: 1vw;
-  border: solid 1px blue;
   align-items: center;
   z-index:99;
 }

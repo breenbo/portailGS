@@ -9,7 +9,7 @@
       </h2>
     </div>
     <transition name="fade">
-      <div id="body" 
+      <div id="body"
            v-show="annuaireView"
            :style="{borderLeftColor:borderColor}"
       >
@@ -69,13 +69,13 @@ export default {
       if (hover) {
         this.$route.params.id
           ? (event.target.style.color = this.services[this.$route.params.id].supportColor)
-          : "";
+          : (event.target.style.color = "red");
       } else {
         this.$route.params.id
           ? (event.target.style.color = this.services[
               this.$route.params.id
             ].darkFontColor)
-          : "";
+          :  event.target.style.color = "#2c3e50";
       }
     }
   },
@@ -95,9 +95,6 @@ h2 {
   padding-left: 2vw;
   cursor: pointer;
 }
-/* h2:hover {
-  border-left: solid 6px black;
-} */
 #body {
   position: absolute;
   top: 8vh;
