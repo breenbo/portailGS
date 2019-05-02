@@ -27,6 +27,12 @@ import "vue-awesome/icons/times-circle";
 import "vue-awesome/icons/car";
 import "vue-awesome/icons/bed";
 import "vue-awesome/icons/link";
+import "vue-awesome/icons/glasses"
+import "vue-awesome/icons/utensils"
+import "vue-awesome/icons/home"
+import "vue-awesome/icons/search"
+import "vue-awesome/icons/window-close"
+import "vue-awesome/icons/plus"
 // register and call logo globally
 import Icon from "vue-awesome/components/Icon";
 Vue.component("v-icon", Icon);

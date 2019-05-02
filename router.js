@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Main from "./views/Main.vue";
-import MainHeader from "./views/MainHeader.vue";
-import Header from "./views/Header.vue";
+import Main from "./components/Main.vue";
+import MainHeader from "./components/MainHeader.vue";
+import Header from "./components/Header.vue";
 
 Vue.use(Router);
 
@@ -31,7 +31,7 @@ export default new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
+        import(/* webpackChunkName: "about" */ "./components/About.vue")
     }
   ]
 });

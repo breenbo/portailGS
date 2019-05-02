@@ -58,34 +58,18 @@ export default {
           "novembre",
           "décembre"
         ],
-        domaines: [
-          // "ceremonie",
-          "DICOM",
-          "PIL",
-          "SAF",
-          "SAP",
-          "SSC",
-          "SSV",
-          "HSCT"
-        ],
-        services: [
-          { name: "Accueil", logo: "", active: true },
-          { name: "DICOM", logo: "users", active: false },
-          { name: "PIL", logo: "tasks", active: false },
-          { name: "SAF", logo: "shopping-cart", active: false },
-          { name: "SAP", logo: "address-card", active: false },
-          { name: "SSC", logo: "car", active: false },
-          { name: "SSV", logo: "building", active: false },
-          { name: "HSCT", logo: "street-view", active: false }
-        ],
         domainsDict: {
+          accueil: {
+            nom:"DICOM Antilles",
+            logo: "",
+            bgcolor: "lightgray" },
           DICOM: {
             nom: "Directeur",
             logo: "users",
             bgcolor: "#8B5D5D",
             fontColor:"hsl(0,0%,13%)",
             darkFontColor:"hsl(0,0%,13%)",
-            supportColor:"hsl(360,67%,44%)",
+            supportColor:"hsl(360,67%,60%)",
             lightbgcolor:"#F0E9E9"
           },
           PIL: {
@@ -99,17 +83,35 @@ export default {
             // lightbgcolor:"hsl(295,58%,93%)",
             lightbgcolor:"hsl(262,61%,93%)"
           },
+          BIL : {
+            nom: "Bureau des Logements",
+            logo: "home",
+            bgcolor: "hsl(184,80%,54%)",
+            fontColor:"hsl(42,15%,23%)",
+            darkFontColor:"hsl(42,15%,23%)",
+            supportColor:"hsl(360,71%,66%)",
+            lightbgcolor:"hsl(184,100%,96%)"
+            },
+          C3J : {
+            nom: "Contentieux Juridique",
+            logo: "glasses",
+            bgcolor: "hsl(83,55%,52%)",
+            fontColor:"hsl(0,0%,23%)",
+            darkFontColor:"hsl(0,0%,23%)",
+            supportColor:"hsl(200,66%,69%)",
+            lightbgcolor:"hsl(83,88%,94%)"
+            },
           SAF: {
-            nom: "Service Achats Finances",
+            nom: "Achats Finances",
             logo: "shopping-cart",
             bgcolor: "hsl(44,92%,63%)",
             fontColor:"hsl(0,0%,23%)",
             darkFontColor:"hsl(0,0%,23%)",
-            supportColor:"hsl(162,63%,41%)",
+            supportColor:"hsl(162,63%,60%)",
             lightbgcolor:"hsl(49,100%,96%)"
           },
           SAP: {
-            nom: "Service Administration du Personnel",
+            nom: "Administration du Personnel",
             logo: "address-card",
             bgcolor: "hsl(184,77%,34%)",
             fontColor:"hsl(42,15%,13%)",
@@ -118,17 +120,17 @@ export default {
             lightbgcolor: "hsl(186,100%,94%)"
           },
           SSC: {
-            nom: "Service Soutiens Communs",
+            nom: "Soutiens Communs",
             logo: "car",
             bgcolor: "hsl(122,39%,41%)",
             fontColor:"hsl(0,0%,23%)",
             darkFontColor:"hsl(0,0%,23%)",
-            supportColor:"hsl(360,67%,44%)",
+            supportColor:"hsl(360,67%,60%)",
             lightbgcolor: "hsl(125,65%,93%)"
           },
           SSV: {
-            nom: "Service Soutien Vie",
-            logo: "building",
+            nom: "Soutien Vie",
+            logo: "utensils",
             bgcolor: "hsl(14,89%,55%)",
             fontColor:"hsl(0,0%,23%)",
             darkFontColor:"hsl(0,0%,23%)",
@@ -143,10 +145,7 @@ export default {
             darkFontColor:"hsl(42,15%,13%)",
             supportColor:"hsl(42,57%,55%)",
             lightbgcolor: "hsl(360,100%,97%)"
-          },
-          accueil: {
-            logo: "male",
-            bgcolor: "lightgray" }
+          }
         },
         balises: ["image", "lien", "lien1", "lien2", "lien3", "mail1", "mail2"]
       }
@@ -328,8 +327,10 @@ export default {
       // input : object with some attributes filled with something not space
       // output : object with array domains attribute (domains : sst, pam, cdt)
       object.domains = ["accueil"];
+      const domaines = Object.keys(this.devChoices.domainsDict)
       for (const attr in object) {
-        if (this.devChoices.domaines.indexOf(attr) !== -1) {
+        if (domaines.indexOf(attr) !== -1) {
+        //if (this.devChoices.domaines.indexOf(attr) !== -1) {
           if (/\S/.test(object[attr])) {
             object.domains.push(attr);
           }

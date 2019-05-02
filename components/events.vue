@@ -3,7 +3,7 @@
     <h1>Echéances</h1>
     {{routeId}}
     <div v-for="(value, key) in temporalMarkup" :key="value.id">
-      <div class="semaine" 
+      <div class="semaine"
            :style="{color:fontColor, borderBottomColor:fontColor}"
       >
         {{value}}

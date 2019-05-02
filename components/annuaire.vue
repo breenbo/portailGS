@@ -24,8 +24,13 @@
           placeholder="recherche par grade, prénom, nom, service, fonction"
         >
         <div id="result">
-          <div class="row" v-for="result in filteredAnnuaire" :key="result.id">
-            <div v-for="field in searchFields" :key="field.id">{{result[field]}}</div>
+          <div class="row"
+               v-for="result in filteredAnnuaire"
+               :key="result.id">
+            <div v-for="field in searchFields"
+                 :key="field.id">
+                {{result[field]}}
+            </div>
           </div>
         </div>
       </div>
