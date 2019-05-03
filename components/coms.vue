@@ -18,7 +18,7 @@
           <v-icon
             v-for="domain in com.domains.filter(el => el.indexOf('accueil') === -1)"
             :key="domain.id"
-            :name="devChoices.domainsDict[domain].logo"
+            :name="devChoices.services[domain].logo"
             scale="2.5"
             class="logo"
           />
@@ -132,11 +132,11 @@ export default {
     hoverColor(event, hover) {
       if (hover) {
         this.$route.params.id
-          ? (event.target.style.color = this.devChoices.domainsDict[this.$route.params.id].supportColor)
+          ? (event.target.style.color = this.devChoices.services[this.$route.params.id].supportColor)
           : "";
       } else {
         this.$route.params.id
-          ? (event.target.style.color = this.devChoices.domainsDict[this.$route.params.id].darkFontColor)
+          ? (event.target.style.color = this.devChoices.services[this.$route.params.id].darkFontColor)
           : "";
       }
     }
@@ -147,11 +147,11 @@ export default {
       return today.getDate() + " " + this.devChoices.months[today.getMonth()];
     },
     borderColor() {
-      return this.$route.params.id ? this.devChoices.domainsDict[this.$route.params.id].supportColor : ""
+      return this.$route.params.id ? this.devChoices.services[this.$route.params.id].supportColor : ""
     },
     fontColor() {
       return this.$route.params.id
-        ? this.devChoices.domainsDict[this.$route.params.id].darkFontColor
+        ? this.devChoices.services[this.$route.params.id].darkFontColor
         : "";
     }
   },

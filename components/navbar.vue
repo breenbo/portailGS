@@ -79,7 +79,7 @@ export default {
       inputShow:false
     };
   },
-  props: ["liens", "domains"],
+  props: ["liens", "services"],
   methods: {
     initSearch() {
         this.search = ""
@@ -100,31 +100,31 @@ export default {
       const el = document.getElementById(id)
       if (hover) {
         this.$route.params.id
-              ?  el.style.color = this.domains[this.$route.params.id].supportColor
+              ?  el.style.color = this.services[this.$route.params.id].supportColor
               : el.style.color = "red"
       } else {
         this.$route.params.id
-              ? el.style.color = this.domains[this.$route.params.id].darkFontColor
+              ? el.style.color = this.services[this.$route.params.id].darkFontColor
               : el.style.color = "#2c3e50"
       }
     }
   },
   computed: {
     borderColor() {
-      return this.$route.params.id ? this.domains[this.$route.params.id].supportColor : ""
+      return this.$route.params.id ? this.services[this.$route.params.id].supportColor : ""
     },
     fontColor () {
-      return this.$route.params.id ? this.domains[this.$route.params.id].darkFontColor : ""
+      return this.$route.params.id ? this.services[this.$route.params.id].darkFontColor : ""
     },
     computedServices () {
-      const servNames = Object.keys(this.domains)
+      const servNames = Object.keys(this.services)
       const len = servNames.length
       let servicesArray = []
       for (let i=0; i<len; i++) {
           let servObj = {}
           servObj.name = servNames[i]
           servObj.name === 'accueil' ? servObj.name = 'Accueil':''
-          servObj.logo = this.domains[servNames[i]].logo
+          servObj.logo = this.services[servNames[i]].logo
           servicesArray.push(servObj)
       }
       if (!this.inputShow) {

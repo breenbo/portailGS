@@ -1,16 +1,15 @@
 <template>
   <div id="app">
     <transition name="headerSlide" appear>
-      <router-view name="header" :services="devChoices.domainsDict" :key="$route.params.id"></router-view>
+      <router-view name="header" :services="devChoices.services" :key="$route.params.id"></router-view>
     </transition>
     <navbar
        :services="devChoices.services"
-       :domains="devChoices.domainsDict"
        :liens="liens"
     >
     </navbar>
     <plan :annuaire="annuaire"
-          :services="devChoices.domainsDict"
+          :services="devChoices.services"
           :liensPlan="liensPlan"
     >
     </plan>
@@ -58,7 +57,7 @@ export default {
           "novembre",
           "décembre"
         ],
-        domainsDict: {
+        services: {
           accueil: {
             nom:"DICOM Antilles",
             logo: "",
@@ -257,7 +256,7 @@ export default {
               obj.Texte + obj.Echeance.getDate() + j.toString() + i.toString();
           }
           const len = obj.domains.length - 1;
-          evt || coms ? obj.color = this.devChoices.domainsDict[obj.domains[len]].bgcolor : '';
+          evt || coms ? obj.color = this.devChoices.services[obj.domains[len]].bgcolor : '';
         }
         // store each object in array
         if (domain) {
@@ -327,7 +326,7 @@ export default {
       // input : object with some attributes filled with something not space
       // output : object with array domains attribute (domains : sst, pam, cdt)
       object.domains = ["accueil"];
-      const domaines = Object.keys(this.devChoices.domainsDict)
+      const domaines = Object.keys(this.devChoices.services)
       for (const attr in object) {
         if (domaines.indexOf(attr) !== -1) {
         //if (this.devChoices.domaines.indexOf(attr) !== -1) {

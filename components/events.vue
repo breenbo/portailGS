@@ -22,7 +22,7 @@
           <v-icon
             v-for="domain in event.domains.filter(el=>el.indexOf('accueil') === -1)"
             :key="domain.id"
-            :name="devChoices.domainsDict[domain].logo"
+            :name="devChoices.services[domain].logo"
             scale="1.5"
             class="logo"
           />
@@ -69,13 +69,13 @@ export default {
   },
   computed: {
     backgroundColor () {
-      return this.$route.params.id ? this.devChoices.domainsDict[this.$route.params.id].lightbgcolor : ''
+      return this.$route.params.id ? this.devChoices.services[this.$route.params.id].lightbgcolor : ''
     },
     fontColor () {
-      return this.$route.params.id ? this.devChoices.domainsDict[this.$route.params.id].darkFontColor : ""
+      return this.$route.params.id ? this.devChoices.services[this.$route.params.id].darkFontColor : ""
     },
     supportColor () {
-      return this.$route.params.id ? this.devChoices.domainsDict[this.$route.params.id].supportColor : ""
+      return this.$route.params.id ? this.devChoices.services[this.$route.params.id].supportColor : ""
     }
   },
   created() {
