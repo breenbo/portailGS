@@ -86,7 +86,7 @@ export default {
         this.searchRegexp = /(?:)/
         EventBus.$emit("searchEdit", this.searchRegexp);
         this.inputShow = !this.inputShow
-        this.$nextTick(() => document.getElementById("inputSearch").focus())
+        //this.$nextTick(() => document.getElementById("inputSearch").focus())
     },
     showSubMenu() {
       // service.show = !service.show
@@ -136,9 +136,9 @@ export default {
   },
   mounted() {
       // close search input on focus lost
-      document.getElementById("inputSearch").onblur = () => {
-          this.inputShow = false
-      }
+      //document.getElementById("inputSearch").onblur = () => {
+          //this.inputShow = false
+      //}
   }
 };
 </script>
@@ -246,6 +246,7 @@ input {
 }
 #closeIcon {
     transform: rotate(45deg);
+    margin-top:-4px;
 }
 #searchContainer {
     position: absolute;

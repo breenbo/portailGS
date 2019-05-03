@@ -223,7 +223,6 @@ export default {
   grid-template-columns: 1fr 1fr 1fr;
   grid-column-gap: 1vw;
   grid-row-gap: 1vw;
-  align-items: center;
   font-size:1.5vw;
 }
 .refContainer a {
