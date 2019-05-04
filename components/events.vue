@@ -16,13 +16,13 @@
           :key="event.key"
         >
           <span class="jour">{{event.Echeance.getDate().toString().padStart(2,"0")}}</span>
-          <span class="mois">{{devChoices.months[event.Echeance.getMonth()]}}</span>
+          <span class="mois">{{months[event.Echeance.getMonth()]}}</span>
           <span class="heure" v-if="event.heure">- {{event.heure}}</span>
           <!-- icon only for domain != accueil -->
           <v-icon
             v-for="domain in event.domains.filter(el=>el.indexOf('accueil') === -1)"
             :key="domain.id"
-            :name="devChoices.services[domain].logo"
+            :name="services[domain].logo"
             scale="1.5"
             class="logo"
           />
@@ -35,6 +35,8 @@
 
 <script>
 import { EventBus } from "../eventBus.js";
+import { devChoices } from "../mixins/devChoices"
+import { colors } from "../mixins/colors"
 
 export default {
   data() {
@@ -53,29 +55,15 @@ export default {
       routeId:''
     };
   },
-  props: ["echeances", "logoDict", "devChoices"],
+  props: ["echeances"],
+  mixins:[devChoices, colors],
   methods: {
-    borderClass(obj) {
-      const border = `border-left:solid 6px ${obj.color}`;
-      return border;
-    },
     filteredEcheances(key, id) {
       // filter echeances array if id for each pages
       return this.echeances
         .filter(el => el.sorted === key)
         .filter(el => (id === undefined ? true : el.domains.indexOf(id) !== -1))
         .filter(el => this.search.test(el.Texte));
-    }
-  },
-  computed: {
-    backgroundColor () {
-      return this.$route.params.id ? this.devChoices.services[this.$route.params.id].lightbgcolor : ''
-    },
-    fontColor () {
-      return this.$route.params.id ? this.devChoices.services[this.$route.params.id].darkFontColor : ""
-    },
-    supportColor () {
-      return this.$route.params.id ? this.devChoices.services[this.$route.params.id].supportColor : ""
     }
   },
   created() {

@@ -39,6 +39,9 @@
 </template>
 
 <script>
+import { devChoices } from "../mixins/devChoices"
+import { colors } from "../mixins/colors"
+
 export default {
   data() {
     return {
@@ -47,6 +50,7 @@ export default {
       searchFields: ["grade", "prenom", "nom", "compagnie", "poste", "tel"]
     };
   },
+  mixins:[devChoices, colors],
   computed: {
     filteredAnnuaire() {
       const regexp = new RegExp(this.searchInput, "i");
@@ -59,9 +63,6 @@ export default {
         return regexp.test(testString);
       });
     },
-    borderColor() {
-      return this.$route.params.id ? this.services[this.$route.params.id].supportColor : ""
-    }
   },
   methods: {
     init() {
@@ -70,19 +71,6 @@ export default {
       // give focus on input field : use nextTick to wait creation
       this.$nextTick(() => document.getElementById("input").focus());
     },
-    hoverColor(event, hover) {
-      if (hover) {
-        this.$route.params.id
-          ? (event.target.style.color = this.services[this.$route.params.id].supportColor)
-          : (event.target.style.color = "red");
-      } else {
-        this.$route.params.id
-          ? (event.target.style.color = this.services[
-              this.$route.params.id
-            ].darkFontColor)
-          :  event.target.style.color = "#2c3e50";
-      }
-    }
   },
   mounted() {
     // close annuaire on focus lost == esc pressed
@@ -90,7 +78,8 @@ export default {
       this.annuaireView = false;
     };
   },
-  props: ["annuaire", "services"]
+  props: ["annuaire"]
+  //props: ["annuaire", "services"]
 };
 </script>
 

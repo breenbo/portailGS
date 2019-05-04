@@ -1,7 +1,7 @@
 <template>
   <div id="container" :style="{backgroundColor:backgroundColor, color:fontColor}">
     <h1>Plan</h1>
-    <annuaire :annuaire="annuaire" 
+    <annuaire :annuaire="annuaire"
               :services="services"
               :style="{color:fontColor}"
     >
@@ -25,40 +25,16 @@
 
 <script>
 import annuaire from "./annuaire.vue";
+import { devChoices } from "../mixins/devChoices"
+import { colors } from "../mixins/colors.js"
 // import store from '../store'
 
 export default {
   components: {
     annuaire
   },
-  props: ["annuaire", "services", "liensPlan"],
-  methods: {
-    hoverColor(event, hover) {
-      if (hover) {
-        this.$route.params.id
-          ? (event.target.style.color = this.services[this.$route.params.id].supportColor)
-          : "";
-      } else {
-        this.$route.params.id
-          ? (event.target.style.color = this.services[
-              this.$route.params.id
-            ].darkFontColor)
-          : "";
-      }
-    }
-  },
-  computed: {
-    backgroundColor() {
-      return this.$route.params.id
-        ? this.services[this.$route.params.id].lightbgcolor
-        : "";
-    },
-    fontColor() {
-      return this.$route.params.id
-        ? this.services[this.$route.params.id].darkFontColor
-        : "";
-    }
-  },
+  props: ["annuaire", "liensPlan"],
+  mixins:[devChoices, colors],
 };
 </script>
 

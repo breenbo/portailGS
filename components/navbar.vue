@@ -2,17 +2,19 @@
   <div id="container">
     <router-link
       v-for="service in computedServices"
+      tag="span"
       :key="service.id"
-      class="title"
       :to="['Accueil'].indexOf(service.name) !== -1  ? '/' : service.name"
       :id="service.name"
       :style="{borderColor:borderColor, color:fontColor}"
     >
-      <v-icon v-if="service.logo" :name="service.logo" scale="1.5" class="logo"/>
-      <span @mouseenter="hoverColor(service.name, true)"
-           @mouseleave="hoverColor(service.name, false)"
+      <span @mouseenter="hoverColor($event, true)"
+            @mouseleave="hoverColor($event, false)"
+            class="title"
+            :style="{color:fontColor}"
       >
-        {{service.name}}
+          <v-icon v-if="service.logo" :name="service.logo" scale="1.5" class="logo"/>
+            <span>{{service.name}}</span>
       </span>
     </router-link>
     <div id="menuLinks"
@@ -30,8 +32,8 @@
             <a :id="lien.nomLien"
                :href="lien.adresse"
                :style="{color:fontColor}"
-               @mouseenter="hoverColor(lien.nomLien, true)"
-               @mouseleave="hoverColor(lien.nomLien, false)"
+               @mouseenter="hoverColor($event, true)"
+               @mouseleave="hoverColor($event, false)"
                class="subMenuLink"
             >
                {{lien.nomLien}}
@@ -69,6 +71,8 @@
 <script>
 // import store from '../store'
 import { EventBus } from "../eventBus";
+import { colors } from "../mixins/colors"
+import { devChoices } from "../mixins/devChoices"
 
 export default {
   data() {
@@ -79,7 +83,8 @@ export default {
       inputShow:false
     };
   },
-  props: ["liens", "services"],
+  props: ["liens"],
+  mixins:[devChoices, colors],
   methods: {
     initSearch() {
         this.search = ""
@@ -96,26 +101,8 @@ export default {
       this.searchRegexp = new RegExp(this.search, "i");
       EventBus.$emit("searchEdit", this.searchRegexp);
     },
-    hoverColor(id, hover) {
-      const el = document.getElementById(id)
-      if (hover) {
-        this.$route.params.id
-              ?  el.style.color = this.services[this.$route.params.id].supportColor
-              : el.style.color = "red"
-      } else {
-        this.$route.params.id
-              ? el.style.color = this.services[this.$route.params.id].darkFontColor
-              : el.style.color = "#2c3e50"
-      }
-    }
   },
   computed: {
-    borderColor() {
-      return this.$route.params.id ? this.services[this.$route.params.id].supportColor : ""
-    },
-    fontColor () {
-      return this.$route.params.id ? this.services[this.$route.params.id].darkFontColor : ""
-    },
     computedServices () {
       const servNames = Object.keys(this.services)
       const len = servNames.length
@@ -133,12 +120,6 @@ export default {
         return ''
       }
     }
-  },
-  mounted() {
-      // close search input on focus lost
-      //document.getElementById("inputSearch").onblur = () => {
-          //this.inputShow = false
-      //}
   }
 };
 </script>
@@ -262,5 +243,9 @@ input {
     position:absolute;
     right:6vw;
     width:40vw;
+}
+/* remove underline in router-link */
+li a {
+    text-decoration: none;
 }
 </style>

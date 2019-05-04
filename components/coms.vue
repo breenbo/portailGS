@@ -18,7 +18,7 @@
           <v-icon
             v-for="domain in com.domains.filter(el => el.indexOf('accueil') === -1)"
             :key="domain.id"
-            :name="devChoices.services[domain].logo"
+            :name="services[domain].logo"
             scale="2.5"
             class="logo"
           />
@@ -53,7 +53,8 @@
 
 <script>
 import { EventBus } from "../eventBus.js";
-// import { write } from 'fs';
+import { devChoices } from "../mixins/devChoices"
+import { colors } from "../mixins/colors"
 
 export default {
   data() {
@@ -63,13 +64,9 @@ export default {
       birthdayText: ''
     };
   },
-  props: ["comm", "devChoices", "annuaire", "referentiel"],
+  mixins:[devChoices, colors],
+  props: ["comm", "annuaire", "referentiel"],
   methods: {
-    // add color to border depending on object's color
-    borderClass: obj => {
-      const border = `border-left:solid 6px ${obj.color}`;
-      return border;
-    },
     toggleBody(com) {
       // change com.bodyView to toggle body
       com.bodyView = !com.bodyView;
@@ -129,31 +126,12 @@ export default {
       return this.birthdayText = birthdayText;
       // return this.annuaire.filter(el => el.dateNaissance)[1].dateNaissance
     },
-    hoverColor(event, hover) {
-      if (hover) {
-        this.$route.params.id
-          ? (event.target.style.color = this.devChoices.services[this.$route.params.id].supportColor)
-          : "";
-      } else {
-        this.$route.params.id
-          ? (event.target.style.color = this.devChoices.services[this.$route.params.id].darkFontColor)
-          : "";
-      }
-    }
   },
   computed: {
     today() {
       const today = new Date();
-      return today.getDate() + " " + this.devChoices.months[today.getMonth()];
+      return today.getDate() + " " + this.months[today.getMonth()];
     },
-    borderColor() {
-      return this.$route.params.id ? this.devChoices.services[this.$route.params.id].supportColor : ""
-    },
-    fontColor() {
-      return this.$route.params.id
-        ? this.devChoices.services[this.$route.params.id].darkFontColor
-        : "";
-    }
   },
   created: function() {
     EventBus.$on("searchEdit", search => (this.search = search));

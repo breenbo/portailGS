@@ -1,5 +1,5 @@
 <template>
-  <div id="header" :style="{backgroundColor:backgroundColor}">
+  <div id="header" :style="{backgroundColor:headerBackColor}">
     <h1 :style="{color:fontColor, borderColor:fontColor}"
         :data-text="services[$route.params.id].nom"
     >
@@ -10,16 +10,11 @@
 </template>
 
 <script>
+import { devChoices } from "../mixins/devChoices"
+import { colors } from "../mixins/colors"
+
 export default {
-  props: ["services"],
-  computed : {
-    fontColor() {
-      return this.$route.params.id ? this.services[this.$route.params.id].fontColor : ""
-    },
-    backgroundColor() {
-      return this.$route.params.id ? this.services[this.$route.params.id].bgcolor : ""
-    }
-  }
+  mixins:[devChoices, colors],
 };
 </script>
 
